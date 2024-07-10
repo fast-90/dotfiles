@@ -118,4 +118,4 @@ eval "$(pyenv init -)"
 
 alias k="kubectl"
 alias av="source .venv/bin/activate"
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH="/opt/homebrew/bin/:/opt/openjdk/bin:$PATH"

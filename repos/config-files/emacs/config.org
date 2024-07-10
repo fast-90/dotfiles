@@ -324,7 +324,6 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 (elpaca-wait)
 
 (use-package eldoc
-  :elpaca nil
   :custom
   (eldoc-echo-area-use-multiline-p nil))
 #+end_src
@@ -1841,7 +1840,10 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 (use-package magit
   :after transient)
 
-(use-package transient)
+(use-package transient
+  :after seq)
+
+(use-package seq)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2644,7 +2646,7 @@ Function to archive all done task in current org agenda/file.
 #+begin_src emacs-lisp
 (use-package eglot
   :defer t
-  :after consult
+  :after (consult jsonrpc)
   :bind
   (:map dn/prog-map
         ("d" . xref-find-definitions)
@@ -2672,6 +2674,8 @@ Variables. See also the Eglot manual."
                   (list :pylsp
                         (list :plugins
                               (list :ruff (list :extendSelect ["I"])))))))
+
+(use-package jsonrpc)
 #+end_src
 
 *** consult-eglot

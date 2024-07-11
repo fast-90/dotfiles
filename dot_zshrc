@@ -119,3 +119,10 @@ eval "$(pyenv init -)"
 alias k="kubectl"
 alias av="source .venv/bin/activate"
 export PATH="/opt/homebrew/bin/:/opt/openjdk/bin:$PATH"
+
+# Brew across users
+brewser=$(stat -f "%Su" $(which brew))
+if [ "$(whoami)" != $brewser ]; then
+    unalias brew 2>/dev/null
+    alias brew='sudo -Hu '$brewser' brew'
+fi

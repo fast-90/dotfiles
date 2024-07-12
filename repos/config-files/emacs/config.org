@@ -2519,11 +2519,11 @@ Function to archive all done task in current org agenda/file.
 ** org-noter
 
 #+begin_src emacs-lisp
-(use-package org-noter
-  :init
-  (setq org-noter-doc-split-fraction '(0.6 . 0.4))
-  (setq org-noter-always-create-frame nil)
-  (setq org-noter-kill-frame-at-session-end nil))
+;; (use-package org-noter
+;;   :init
+;;   (setq org-noter-doc-split-fraction '(0.6 . 0.4))
+;;   (setq org-noter-always-create-frame nil)
+;;   (setq org-noter-kill-frame-at-session-end nil))
 #+end_src
 
 

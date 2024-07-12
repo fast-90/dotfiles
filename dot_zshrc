@@ -108,7 +108,8 @@ source /opt/homebrew/opt/spaceship/spaceship.zsh
 export PATH=/Users/duynguyen/bin:$PATH
 
 # Created by `pipx` on 2024-01-08 10:49:43
-export PATH="$PATH:/Users/duynguyen/.local/bin"
+# export PATH="$PATH:/Users/duynguyen/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"

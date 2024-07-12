@@ -228,7 +228,7 @@ Installing as per the instructions:
 (elpaca-wait)
 
 (use-package bind-key
-  :elpaca nil
+  :ensure nil
   :after use-package) ;; if you use any :bind variant
 
 #+end_src
@@ -247,7 +247,7 @@ Use latest version of ~org~.
 
 #+begin_src emacs-lisp :tangle (expand-file-name "init.el" user-emacs-directory)
 (use-package org
-    :elpaca (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :tag "release_9.6.13"))
+    :ensure (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :tag "release_9.6.13"))
 
 ;; Wait until org is loaded before loading literate config.
 (elpaca-wait)
@@ -339,7 +339,7 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 
 #+begin_src emacs-lisp
 (use-package autorevert
-  :elpaca nil
+  :ensure nil
   :defer 2
   :custom
   (auto-revert-use-notify nil))
@@ -349,7 +349,7 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 
 #+begin_src emacs-lisp
 (use-package recentf
-  :elpaca nil
+  :ensure nil
   :defer 2
   :init
   (recentf-mode 1)
@@ -385,7 +385,7 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 
 #+begin_src emacs-lisp
 (use-package so-long
-  :elpaca nil
+  :ensure nil
   :init
   (setq so-long-mode-line-label nil)
   (defun dn/so-long-toggle ()
@@ -502,7 +502,7 @@ Also hides other apps"
 ** Pixel precision scroll
 #+begin_src emacs-lisp
 (use-package pixel-scroll
-  :elpaca nil
+  :ensure nil
   :bind
   ([remap scroll-up-command]   . pixel-scroll-interpolate-down)
   ([remap scroll-down-command] . pixel-scroll-interpolate-up)
@@ -521,7 +521,7 @@ Also hides other apps"
 (elpaca-wait)
 
   (use-package dired
-    :elpaca nil
+    :ensure nil
     :hook
     (dired-mode-hook . dired-omit-mode)
     (dired-mode-hook . dired-hide-details-mode)
@@ -974,7 +974,7 @@ This package is required to enable expected behaviour with Meow keybindings in n
 #+begin_src emacs-lisp
 (use-package meow-vterm
   :after vterm
-  :elpaca (meow-vterm :type git :host github :repo "accelbread/meow-vterm")
+  :ensure (meow-vterm :type git :host github :repo "accelbread/meow-vterm")
   :config
   (meow-vterm-enable))
 #+end_src
@@ -1175,7 +1175,7 @@ Currently trying =mood-line= over =doom-modeline= as the latter messes up the ba
 ;;   (display-battery-mode))
 
 ;; (use-package mood-line-segment-modal
-;;   :elpaca nil
+;;   :ensure nil
 ;;   :after mood-line
 ;;   :config
 ;;   (setq mood-line-segment-modal-meow-state-alist '((normal "NORMAL" . font-lock-variable-name-face)
@@ -1279,7 +1279,7 @@ Currently trying =mood-line= over =doom-modeline= as the latter messes up the ba
 
 #+begin_src emacs-lisp
 (use-package tab-bar
-  :elpaca nil
+  :ensure nil
   :hook (server-after-make-frame-hook . (lambda () (tab-bar-rename-tab "main")))
   :init  
   (defun tab-bar-tab-name-format-comfortable (tab i)
@@ -1299,7 +1299,7 @@ Currently trying =mood-line= over =doom-modeline= as the latter messes up the ba
 
 #+begin_src emacs-lisp
 (use-package tab-bookmark
-  :elpaca (tab-bookmark :type git :host github :repo "minad/tab-bookmark")
+  :ensure (tab-bookmark :type git :host github :repo "minad/tab-bookmark")
   :init
   (setq bookmark-set-fringe-mark nil))
 #+end_src
@@ -1421,7 +1421,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 
 #+begin_src emacs-lisp
 (use-package vertico
-  :elpaca (:files (:defaults "extensions/*"))
+  :ensure (:files (:defaults "extensions/*"))
   :bind (:map vertico-map
               ("C-j" . vertico-next)
               ("C-k" . vertico-previous)
@@ -1438,7 +1438,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 
 #+begin_src emacs-lisp
 (use-package vertico-directory
-  :elpaca nil
+  :ensure nil
   :after vertico
   :hook
   (rfn-eshadow-update-overlay-hook . vertico-directory-tidy)
@@ -1478,7 +1478,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 #+begin_src emacs-lisp
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :elpaca nil
+  :ensure nil
   :defer 2
   :config
   (savehist-mode))
@@ -1675,7 +1675,7 @@ Idea: use C-p or M-p as the prefix key.
 ** Windmove
 #+begin_src emacs-lisp
 (use-package windmove
-  :elpaca nil
+  :ensure nil
   :init
   (defun windmove-setup ()
     (keymap-global-set "s-j" #'windmove-down)
@@ -1769,7 +1769,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 
 #+begin_src emacs-lisp
 (use-package flyspell
-  :elpaca nil
+  :ensure nil
   :defer t)
 #+end_src
 
@@ -1875,7 +1875,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 
 #+begin_src emacs-lisp
 (use-package org
-  :elpaca nil
+  :ensure nil
   :bind
   (("C-c a" . org-agenda))
   :init
@@ -1997,7 +1997,7 @@ Related github issues:
 
 #+begin_src emacs-lisp
 (use-package emacsql
-  :elpaca (:host github :repo: "magit/emacsql" :files (:defaults)))
+  :ensure (:host github :repo: "magit/emacsql" :files (:defaults)))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2083,7 +2083,7 @@ Salv-mode provides a local minor mode to save a buffer when Emacs is idle. I onl
 
 #+begin_src emacs-lisp
 (use-package salv
-  :elpaca (:host github :repo "alphapapa/salv.el")
+  :ensure (:host github :repo "alphapapa/salv.el")
   :init
   (defun dn/org-roam-salv-mode ()
     "Enable salv-mode for org-roam files"
@@ -2630,7 +2630,7 @@ Function to archive all done task in current org agenda/file.
 
 #+begin_src emacs-lisp
 (use-package project
-  :elpaca nil
+  :ensure nil
   :init
   (setq project-switch-commands '((project-find-file "Find file" "f")
                                   (project-find-dir "Find dir" "d")
@@ -2696,7 +2696,7 @@ See also:
 
 #+begin_src emacs-lisp
 (use-package eglot-booster
-  :elpaca (:host github :repo "jdtsmith/eglot-booster")
+  :ensure (:host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :config
   (eglot-booster-mode))
@@ -2714,7 +2714,7 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
 
 #+begin_src emacs-lisp
 (use-package treesit
-  :elpaca nil
+  :ensure nil
   :init
   (setq treesit-language-source-alist
         '((python . ("git@github.com:tree-sitter/tree-sitter-python.git"))
@@ -2752,7 +2752,7 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
 
 #+begin_src emacs-lisp
 (use-package combobulate
-  :elpaca (combobulate :type git :host github :repo "mickeynp/combobulate")
+  :ensure (combobulate :type git :host github :repo "mickeynp/combobulate")
   :init
   (add-hook 'python-base-mode-hook (lambda ()(when buffer-file-name (combobulate-mode))))
   (setq combobulate-key-prefix "C-c q")
@@ -2807,7 +2807,7 @@ markdown-mode
 
 #+begin_src emacs-lisp
 (use-package python
-  :elpaca nil
+  :ensure nil
   :init
   ;; (defun python-comint-filter (output)
   ;;     "Filter out '__PYTHON_EL_' when sending region to inferior Python shell.
@@ -3037,7 +3037,7 @@ Testing  ~compile~ as a replacement for ~python-pytest~ as the latter depends on
 
 #+begin_src emacs-lisp
 (use-package compile
-  :elpaca nil
+  :ensure nil
   :init
   (setq compilation-scroll-output 'first-error)
   (setq compilation-always-kill t)
@@ -3093,7 +3093,7 @@ Adds the =flymake-ruff-load= command which loads the hook for current buffer to 
 #+begin_src emacs-lisp
 ;; (use-package flymake-ruff
 ;;   :after eglot
-;;   :elpaca (flymake-ruff
+;;   :ensure (flymake-ruff
 ;;              :type git
 ;;              :host github
 ;;              :repo "erickgnavar/flymake-ruff")
@@ -3101,7 +3101,7 @@ Adds the =flymake-ruff-load= command which loads the hook for current buffer to 
 
 
 ;; (use-package ruff-fix
-;;   :elpaca (ruff-fix :host github :repo "mkt3/ruff-fix.el")
+;;   :ensure (ruff-fix :host github :repo "mkt3/ruff-fix.el")
 ;;   :bind
 ;;   (:map python-base-mode-map ("C-c l I" . ruff-fix-buffer)))
 #+end_src
@@ -3222,7 +3222,7 @@ Syntax highlighting:
 
 #+begin_src emacs-lisp
 (use-package dockerfile-ts-mode
-  :elpaca nil
+  :ensure nil
   :after treesit
   :mode ("/Dockerfile\\'" . dockerfile-ts-mode)
   :bind (:map dockerfile-ts-mode-map ("C-c C-c" . docker-build))
@@ -3373,7 +3373,7 @@ Using ~ox-ipynb~ to convert =.org= files to =.ipynb= files. The built in functio
 
 #+begin_src emacs-lisp
 (use-package ox-ipynb
-  :elpaca (:host github :repo "jkitchin/ox-ipynb")
+  :ensure (:host github :repo "jkitchin/ox-ipynb")
   :after ox
   :init
   (defun my-replace-python-with-ipython (orig-fun &rest args)
@@ -3418,7 +3418,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 
 #+begin_src emacs-lisp
 ;; (use-package quarto
-;;   :elpaca (:host github :repo "fast-90/quarto.el")
+;;   :ensure (:host github :repo "fast-90/quarto.el")
 ;;   :defer t
 ;;   :commands (quarto-preview quarto-preview-file)
 ;;   :bind
@@ -3489,7 +3489,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 ;;   (pdf-tools-install))
 
 ;; (use-package pdf-occur
-;;   :elpaca nil
+;;   :ensure nil
 ;;   :after pdf-tools
 ;;   :bind (:map pdf-occur-buffer-mode-map
 ;;               ("C-<return>" . pdf-occur-view-occurrence)
@@ -3541,7 +3541,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 
 #+begin_src emacs-lisp
 (use-package erc
-  :elpaca nil
+  :ensure nil
   :init
   (setq erc-server (cond (dn/is-macos "irc.libera.chat")
                          (dn/is-wsl "localhost")))
@@ -3562,7 +3562,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 
 #+begin_src emacs-lisp
 (use-package erc-autoaway
-  :elpaca nil
+  :ensure nil
   :init
   (setq erc-autoaway-idle-seconds 300)
   (setq erc-auto-set-away t))
@@ -3694,7 +3694,7 @@ Although not necessarily Emacs configuration, LaTeX needs to be installed in the
 * Colemak settings
 #+begin_src emacs-lisp
 (use-package emacs
-  :elpaca nil
+  :ensure nil
   :after meow
   :init
   (defvar use-colemak t)

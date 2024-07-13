@@ -148,7 +148,7 @@ Useful links for troubleshooting:
 ;;; early-init.el ends here
 #+end_src
 
-* =init.el=
+* init.el
 
 The code in this section is tangled to =init.el=. Loading this file with ~org-babel-load-file~ requires loading ~org~. Hence, if we want to use the latest version of ~org~ via ~straight~, we need to ensure both packages are loaded in =init.el=.
 
@@ -2076,7 +2076,8 @@ Testing this package. The following are disabled as they conflict with =org-mode
   :hook
   (org-mode-hook . org-modern-mode)
   :custom
-  (org-modern-table nil))
+  (org-modern-table nil)
+  (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("▹" . "▿") ("▹" . "▿") ("▸" . "▾"))))
 #+end_src
 
 ** Salv-mode

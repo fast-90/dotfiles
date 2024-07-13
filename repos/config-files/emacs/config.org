@@ -3469,9 +3469,9 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 #+end_src
 ** Kubernetes
 #+begin_src emacs-lisp
-(use-package kele
-  :config
-  (kele-mode 1))
+;; (use-package kele
+;;   :config
+;;   (kele-mode 1))
 
 (use-package kubernetes)
 #+end_src

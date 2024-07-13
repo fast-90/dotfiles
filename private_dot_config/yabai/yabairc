@@ -28,14 +28,16 @@ yabai -m rule --add app="Discord$" space=2
 yabai -m rule --add app=$"Telegram" space=2
 yabai -m rule --add app="Firefox$" space=4
 yabai -m rule --add app="Google Chrome$" space=4
-# yabai -m rule --add app="Terminal$" space=3
+yabai -m rule --add app="Terminal$" space=5
 yabai -m rule --add app="Emacs$" space=3
+yabai -m rule --add app="Emacsclient$" space=3
 
 
 yabai -m space 1 --label main
 yabai -m space 2 --label socials
 yabai -m space 3 --label browsers
 yabai -m space 4 --label coding
+yabai -m space 5 --label term
 
 yabai -m config top_padding    12
 yabai -m config bottom_padding 12

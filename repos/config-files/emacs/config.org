@@ -557,7 +557,7 @@ brew install coreutils
 ** Buffer management
 
 #+begin_src emacs-lisp
-(keymap-set ctl-x-map "k" 'kill-this-buffer)
+(keymap-set ctl-x-map "k" 'kill-current-buffer)
 #+end_src
 
 ** Workspace management with activities.el

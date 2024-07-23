@@ -148,7 +148,7 @@ Useful links for troubleshooting:
 ;;; early-init.el ends here
 #+end_src
 
-* init.el
+* =init.el=
 
 The code in this section is tangled to =init.el=. Loading this file with ~org-babel-load-file~ requires loading ~org~. Hence, if we want to use the latest version of ~org~ via ~straight~, we need to ensure both packages are loaded in =init.el=.
 
@@ -2076,8 +2076,7 @@ Testing this package. The following are disabled as they conflict with =org-mode
   :hook
   (org-mode-hook . org-modern-mode)
   :custom
-  (org-modern-table nil)
-  (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("▹" . "▿") ("▹" . "▿") ("▸" . "▾"))))
+  (org-modern-table nil))
 #+end_src
 
 ** Salv-mode
@@ -2106,6 +2105,8 @@ Salv-mode provides a local minor mode to save a buffer when Emacs is idle. I onl
   :doc "My custom keymap for Org Roam."
   "f" #'org-roam-node-find
   "d" #'org-roam-dailies-map
+  "t" #'org-roam-tag-add
+  "s" #'consult-org-roam-search
   "c" #'org-id-get-create)
 
 (fset 'dn/org-roam-map dn/org-roam-map)

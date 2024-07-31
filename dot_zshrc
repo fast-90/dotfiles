@@ -127,3 +127,10 @@ if [ "$(whoami)" != $brewser ]; then
     unalias brew 2>/dev/null
     alias brew='sudo -Hu '$brewser' brew'
 fi
+
+# Completion
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+
+# AWS completion
+complete -C '/usr/local/bin/aws_completer' aws

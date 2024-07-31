@@ -813,6 +813,8 @@ brew install coreutils
      ;; Since special modes usually use n to move down, we only overwrite e here.
      '("e" . meow-prev)
      '("n" . meow-next)
+     '("k" . nil)
+     '("j" . nil)
      '("C-S-e" . "H-e")
      '("C-S-n" . "H-n")
      '("`" . meow-select-mode)
@@ -2733,7 +2735,12 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
     (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))))
     ;; (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))))
 #+end_src
-
+** Dape
+#+begin_src emacs-lisp
+(use-package dape
+  :init
+  (setq dape-key-prefix (kbd "C-c d")))
+#+end_src
 ** Breadcrumb
 
 #+begin_src emacs-lisp

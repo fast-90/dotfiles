@@ -1462,8 +1462,12 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
+  (setq vertico-multiform-commands
+      '((consult-line (:not posframe))
+        (consult-ripgrep (:not posframe))
+        (t posframe)))
   :config
-  (vertico-posframe-mode 1))
+  (vertico-multiform-mode 1))
 #+end_src
 ** Orderless
 

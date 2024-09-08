@@ -563,6 +563,7 @@ brew install coreutils
 ** Workspace management with activities.el
 #+begin_src emacs-lisp
 (use-package activities
+  :after dape
   :init
   (activities-mode)
   (activities-tabs-mode)
@@ -575,6 +576,7 @@ brew install coreutils
    ;; commands, this binding is one of the easiest to press.
    ("C-x C-a C-a" . activities-resume)
    ("C-x C-a C-s" . activities-suspend)
+   ("C-x C-a C-d" . activities-define)
    ("C-x C-a C-k" . activities-kill)
    ;; This binding mirrors, e.g. "C-x t RET".
    ("C-x C-a RET" . activities-switch)
@@ -909,6 +911,7 @@ brew install coreutils
      '("=" . meow-indent)
      '("'" . repeat)
      '("/" . meow-search)
+     '("_" . pop-global-mark)
      '("<escape>" . ignore))
     (meow-define-keys 'select
       '("<escape>" . meow-motion-mode)
@@ -1561,7 +1564,7 @@ Enabling icons in Corfu:
   (setq xref-show-definitions-function #'consult-xref)
   (setq meow-goto-line-function 'consult-goto-line)
   (meow-normal-define-key
-   '("M" . consult-register-store)
+   '("K" . consult-register-store)
    '("@" . consult-register))
   (defun dn/consult-outline ()
     "Use consult-org-heading if in org-mode, otherwise use consult-outline."
@@ -1717,7 +1720,9 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 (use-package avy
   :defer t
   :init
-  (setq avy-keys '(?t ?n ?s ?e ?r ?i ?o ?a)))
+  (setq avy-keys '(?t ?n ?s ?e ?r ?i ?o ?a))
+  :config
+  (setq avy-all-windows 'all-frames))
 #+end_src
 
 ** ace-link
@@ -1732,10 +1737,11 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 #+begin_src emacs-lisp
 (use-package popper
   :bind (("C-'"   . popper-toggle)
+         ("C-M-'" . popper-kill-latest-popup)
          ("M-`"   . popper-cycle)
          ("C-\""   . popper-cycle)
          ("M-'" . popper-toggle-type)
-         ("s-'"   . popper-kill-latest-popup)
+         ("s-'"   . popper-cycle)
          :map org-mode-map
          ("C-'" . nil))
   :init
@@ -1754,13 +1760,14 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 	    "\\*pytest\\*"
             "\\*ChatGPT*\\*.*$"
           compilation-mode))
+
   (setq popper-group-function #'popper-group-by-project) 
   (popper-mode +1)
   (popper-echo-mode +1)
   (dolist (buffer-name-regex '("\\*ChatGPT*\\*.*$" "\\*eldoc*\\*.*$"))
     (add-to-list 'display-buffer-alist
                  `(,buffer-name-regex
-                   (display-buffer-reuse-window)
+                   (display-buffer-reuse-window display-buffer-in-side-window)
                    (reusable-frames . visible)
                    (side . right)
                    (window-width . 0.3)) nil ))
@@ -2386,35 +2393,35 @@ Function to archive all done task in current org agenda/file.
          ((todo "" ((org-agenda-overriding-header "Task list")
                     (org-agenda-block-separator nil)
                     (org-super-agenda-groups dn/agenda-group-main)))
-          (agenda "" ((org-agenda-span 1)
-                      (org-deadline-warning-days 0)
-                      (org-agenda-block-separator nil)
-                      (org-scheduled-past-days 0)
-                      ;; We don't need the `org-agenda-date-today'
-                      ;; highlight because that only has a practical
-                      ;; utility in multi-day views.
-                      (org-agenda-day-face-function (lambda (date) 'org-agenda-date))
-                      (org-agenda-format-date "%A %-e %B %Y")
-                      (org-agenda-overriding-header "\nToday's agenda\n")))
-          (agenda "" ((org-agenda-start-on-weekday nil)
-                      (org-agenda-start-day "+1d")
-                      (org-agenda-span 3)
-                      (org-deadline-warning-days 0)
-                      (org-agenda-block-separator nil)
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "\nNext three days\n")))
-          (agenda "" ((org-agenda-time-grid nil)
-                      (org-agenda-start-on-weekday nil)
-                      ;; We don't want to replicate the previous section's
-                      ;; three days, so we start counting from the day after.
-                      (org-agenda-start-day "+4d")
-                      (org-agenda-span 14)
-                      (org-agenda-show-all-dates nil)
-                      (org-deadline-warning-days 0)
-                      (org-agenda-block-separator nil)
-                      (org-agenda-entry-types '(:deadline))
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
+          ;; (agenda "" ((org-agenda-span 1)
+          ;;             (org-deadline-warning-days 0)
+          ;;             (org-agenda-block-separator nil)
+          ;;             (org-scheduled-past-days 0)
+          ;;             ;; We don't need the `org-agenda-date-today'
+          ;;             ;; highlight because that only has a practical
+          ;;             ;; utility in multi-day views.
+          ;;             (org-agenda-day-face-function (lambda (date) 'org-agenda-date))
+          ;;             (org-agenda-format-date "%A %-e %B %Y")
+          ;;             (org-agenda-overriding-header "\nToday's agenda\n")))
+          ;; (agenda "" ((org-agenda-start-on-weekday nil)
+          ;;             (org-agenda-start-day "+1d")
+          ;;             (org-agenda-span 3)
+          ;;             (org-deadline-warning-days 0)
+          ;;             (org-agenda-block-separator nil)
+          ;;             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+          ;;             (org-agenda-overriding-header "\nNext three days\n")))
+          ;; (agenda "" ((org-agenda-time-grid nil)
+          ;;             (org-agenda-start-on-weekday nil)
+          ;;             ;; We don't want to replicate the previous section's
+          ;;             ;; three days, so we start counting from the day after.
+          ;;             (org-agenda-start-day "+4d")
+          ;;             (org-agenda-span 14)
+          ;;             (org-agenda-show-all-dates nil)
+          ;;             (org-deadline-warning-days 0)
+          ;;             (org-agenda-block-separator nil)
+          ;;             (org-agenda-entry-types '(:deadline))
+          ;;             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+          ;;             (org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
           (todo "" ((org-agenda-overriding-header "Inbox\n")
                     (org-super-agenda-groups dn/agenda-group-inbox)
                     (org-agenda-block-separator ?-)))
@@ -2734,6 +2741,7 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
         '((python . ("git@github.com:tree-sitter/tree-sitter-python.git"))
           (typescript . ("git@github.com:tree-sitter/tree-sitter-typescript.git"))
           (yaml . ("git@github.com:ikatyang/tree-sitter-yaml.git"))
+          (json . ("git@github.com:tree-sitter/tree-sitter-json.git"))
           (dockerfile .("git@github.com:camdencheek/tree-sitter-dockerfile.git"))))
   :config
   (when (and (treesit-available-p) (executable-find "tree-sitter"))
@@ -3243,7 +3251,7 @@ Syntax highlighting:
 (use-package dockerfile-ts-mode
   :ensure nil
   :after treesit
-  :mode ("/Dockerfile\\'" . dockerfile-ts-mode)
+  :mode ("\\.Dockerfile\\'" . dockerfile-ts-mode)
   :bind (:map dockerfile-ts-mode-map ("C-c C-c" . docker-build))
   :init
   (defun docker-build(image-name)
@@ -3648,14 +3656,12 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
 (use-package gptel
   :hook
   (gptel-mode-hook . markdown-toggle-markup-hiding)
-  (prog-mode-hook . dn/gptel-prog-hook)
+  ;; (prog-mode-hook . dn/gptel-prog-hook)
   :bind
   (("C-c G" . gptel-menu)
    :map dn/prog-map
    ("C" . gptel-complete-code))
   :init
-  (defvar gptel-completion-model "deepseek-coder:6.7b-base"
-  "The name of the model to use for code completion.")
   (defun gptel-complete-code ()
   "Complete code at point."
   (interactive)
@@ -3675,16 +3681,17 @@ Makes the AI forget the past conversations of current buffer."
     (interactive)
     (setq-local gptel--ollama-context nil))
   :config
-  (setq-default gptel-backend
-                (gptel-make-ollama
-                 "Ollama"
-                 :host "localhost:11434"
-                 :models '("solar" "openhermes" "nous-hermes2:10.7b" "dolphin-mistral" "deepseek-coder:6.7b-base" "deepseek-coder:6.7b-instruct")
-                 :stream t))
-  (setq-default gptel-model "nous-hermes2:10.7b")
-  (setq-default gptel-temperature nil)
+  (setq-default gptel-model "gpt-4o-mini")
+  ;; (setq-default gptel-backend
+  ;;               (gptel-make-ollama
+  ;;                "Ollama"
+  ;;                :host "localhost:11434"
+  ;;                :models '("solar" "openhermes" "nous-hermes2:10.7b" "dolphin-mistral" "deepseek-coder:6.7b-base" "deepseek-coder:6.7b-instruct")
+  ;;                :stream t))
+  ;; (setq-default gptel-model "nous-hermes2:10.7b")
+  ;; (setq-default gptel-temperature nil)
   (setq gptel-directives '((default . "You are a large language model living in Emacs and a helpful assistant. Respond concisely.")
-                           (programming . "You are a professional programmer and an expert in Python, SQL and Rust.")
+                           (programming . "You are a professional programmer and an expert in Python, SQL and Rust. Provide only code, no explanations.")
                            (writing . "You are a large language model and a writing assistant. Respond concisely.")
                            (chat . "You are a large language model and a conversation partner. Respond concisely.")
                            (code-review . "You are a professional programmer and an expert in Python, SQL and Rust. Review the code, provide comments and suggestions for improvements and debug the code where needed.")

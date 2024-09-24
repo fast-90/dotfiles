@@ -1463,7 +1463,10 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 
 #+begin_src emacs-lisp
 (use-package vertico-posframe
+  :after vertico
   :init
+  (vertico-posframe-mode)
+  (vertico-multiform-mode)
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
@@ -1475,9 +1478,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
         (t posframe)))
   :bind (:map vertico-multiform-map
          ("M-p" . nil)
-         ("M-P" . vertico-multiform-posframe))
-  :config
-  (vertico-multiform-mode 1))
+         ("M-P" . vertico-multiform-posframe)))
 #+end_src
 ** Orderless
 

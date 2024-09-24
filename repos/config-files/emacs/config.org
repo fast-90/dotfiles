@@ -334,7 +334,9 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 #+begin_src emacs-lisp
 (use-package eldoc-box
   :after eglot
-  :bind (:map dn/prog-map
+  :bind (:map python-base-mode-map
+              ("C-." . eldoc-box-eglot-help-at-point)
+         :map dn/prog-map
               ("h" . eldoc-box-eglot-help-at-point)))
 #+end_src
 ** Autorevert

@@ -3674,14 +3674,14 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
    ("C" . gptel-complete-code))
   :init
   (defun gptel-complete-code ()
-  "Complete code at point."
-  (interactive)
-  (let ((gptel-max-tokens 40)
-        (gptel-temperature 0.1)
-        (gptel-model gptel-completion-model))
-    (if current-prefix-arg
-        (call-interactively #'gptel-menu)
-      (gptel-send))))
+    "Complete code at point."
+    (interactive)
+    (let ((gptel-max-tokens 40)
+          (gptel-temperature 0.1)
+          (gptel-model gptel-completion-model))
+      (if current-prefix-arg
+          (call-interactively #'gptel-menu)
+        (gptel-send))))
   (defun dn/gptel-prog-hook ()
     "Default gptel parameters for programming."
     (setq-local gptel-model "deepseek-coder:6.7b-instruct"))
@@ -3693,6 +3693,11 @@ Makes the AI forget the past conversations of current buffer."
     (setq-local gptel--ollama-context nil))
   :config
   (setq-default gptel-model "gpt-4o-mini")
+  (gptel-make-ollama
+      "Ollama"
+    :host "localhost:11434"
+    :models '("qwen2.5-coder:7b")
+    :stream t)
   ;; (setq-default gptel-backend
   ;;               (gptel-make-ollama
   ;;                "Ollama"
@@ -3711,8 +3716,8 @@ Makes the AI forget the past conversations of current buffer."
                                     (org-mode . "*Prompt:* ")
                                     (text-mode . "**Prompt:** ")))
   (setq gptel-response-prefix-alist '((markdown-mode . "**Response:**\n\n")
-                                    (org-mode . "*Response:*\n\n")
-                                    (text-mode . "**Response:** "))))
+                                      (org-mode . "*Response:*\n\n")
+                                      (text-mode . "**Response:** "))))
 #+end_src
 * LaTeX
 

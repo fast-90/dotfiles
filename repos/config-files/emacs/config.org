@@ -2689,6 +2689,7 @@ Function to archive all done task in current org agenda/file.
   ;; Always refresh completion table from LSP
   ;; Note: this is a test, might be slow depending on the LSP server
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
   (define-prefix-command 'dn/prog-map)
   (keymap-global-set "C-c l" '("prog" . dn/prog-map))
   (defun dn/pylsp-default-eglot-workspace-configuration()

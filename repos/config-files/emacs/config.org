@@ -2790,6 +2790,10 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
   :init
   (add-hook 'python-base-mode-hook (lambda ()(when buffer-file-name (combobulate-mode))))
   (setq combobulate-key-prefix "C-c q")
+  (defvar-keymap combobulate-logical-repeat-map
+    :repeat t
+    "a" #'combobulate-navigate-logical-previous
+    "e" #'combobulate-navigate-logical-next)  
   (defvar-keymap combobulate-repeat-map
     :repeat t
     "u" #'combobulate-navigate-up-list-maybe

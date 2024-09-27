@@ -2663,9 +2663,29 @@ Function to archive all done task in current org agenda/file.
                                   (project-find-dir "Find dir" "d")
                                   (project-dired "Dired" "D")
                                   (consult-ripgrep "ripgrep" "g")
-                                  (magit-project-status "Magit" "m"))))
+                                  (magit-project-status "Magit" "m")))
+  (setq project-vc-extra-root-markers '("pyproject.toml")))
+;; Returns the parent directory containing a .project file, if any,
+;; to override the standard project.el detection logic when needed.
+;; (defun dn/project-override (dir)
+;;   "Returns the parent directory containing a .project.el file, if any,
+;; to override the standard project.el detection logic when needed."
+;;   (let ((override (locate-dominating-file dir ".project.el")))
+;;     (if override
+;;         (cons 'vc override)
+;;       nil)))
+;;   :config
+;;   (add-hook 'project-find-functions #'dn/project-override))
+
 #+end_src
 
+#+begin_src emacs-lisp
+;; (use-package project-x
+;;   :ensure (project-x :type git :host github :repo "karthink/project-x")
+;;   :after project
+;;   :config
+;;   (project-x-mode 1))
+#+end_src
 ** LSP
 
 *** Eglot

@@ -37,24 +37,29 @@ sketchybar --default "${default[@]}"
 # Let's add some mission control spaces:
 # https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
 # to indicate active and available mission control spaces.
+sketchybar --add event aerospace_workspace_change
+SPACES=("S" "T" "R" "F" "G" "P") 
+SPACE_ICONS=("" "󰈹" "" "󰭹" "" "")
 
-SPACE_ICONS=("" "󰭹" "" "󰈹" "" "" "7" "8" "9" "10")
-for i in "${!SPACE_ICONS[@]}"
-do
-  sid="$(($i+1))"
-  space=(
-    space="$sid"
-    icon="${SPACE_ICONS[i]}"
-    icon.padding_left=7
-    icon.padding_right=7
-    background.color=0x40ffffff
-    background.corner_radius=5
-    background.height=25
-    label.drawing=off
-    script="$PLUGIN_DIR/space.sh"
-    click_script="yabai -m space --focus $sid"
-  )
-  sketchybar --add space space."$sid" left --set space."$sid" "${space[@]}"
+for i in "${!SPACES[@]}"; do
+    sid="${SPACES[$i]}"
+    icon_value=$(match_icon "$sid")
+    sketchybar --add item space.$sid left \
+               --subscribe space.$sid aerospace_workspace_change \
+               --set space.$sid \
+               background.color=0x44ffffff \
+               background.corner_radius=5 \
+               background.height=20 \
+               background.drawing=on \
+               label.drawing=off \
+               icon.padding_left=7 \
+               icon.padding_right=7 \
+               display=$m \
+               icon="${SPACE_ICONS[$i]}" \
+               label="$sid" \
+               click_script="aerospace workspace $sid" \
+               script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+
 done
 
 ##### Adding Left Items #####

@@ -290,6 +290,7 @@ Adjust emacs default settings like UI, indentation, bell sound, back up location
 (setq ring-bell-function 'ignore)                     ; Disable bell sound
 (setq-default indent-tabs-mode nil)                   ; Don't use tabs for indentation
 (setq use-default-font-for-symbols nil)               ; Don't use use default fonts for symbols
+(setq set-mark-command-repeat-pop t)                  ; Allow repeating C-SPC after first set mark command 
 
 ;; Change locations of backups, autosaves and manual customizations
 (setq backup-directory-alist `(("." . "~/.saves")))
@@ -882,6 +883,8 @@ brew install coreutils
      '("I" . meow-right-expand)
      '("j" . meow-join)
      '("k" . meow-kill)
+     '("K" . consult-register-store)
+     '("@" . consult-register)
      '("l" . meow-insert)
      '("L" . meow-open-above)
      '("m" . meow-left)
@@ -1569,9 +1572,9 @@ Enabling icons in Corfu:
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
   (setq meow-goto-line-function 'consult-goto-line)
-  (meow-normal-define-key
-   '("K" . consult-register-store)
-   '("@" . consult-register))
+  ;; (meow-normal-define-key
+  ;;  '("K" . consult-register-store)
+  ;;  '("@" . consult-register))
   (defun dn/consult-outline ()
     "Use consult-org-heading if in org-mode, otherwise use consult-outline."
     (interactive)

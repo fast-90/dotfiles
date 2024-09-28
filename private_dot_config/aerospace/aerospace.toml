@@ -237,7 +237,7 @@ run = 'move-node-to-workspace T'
 # Terminals
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = 'move-node-to-workspace G'
+run = 'move-node-to-workspace R'
 
 # Social apps
 [[on-window-detected]]

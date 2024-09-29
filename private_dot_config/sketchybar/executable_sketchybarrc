@@ -38,7 +38,7 @@ sketchybar --default "${default[@]}"
 # https://felixkratz.github.io/SketchyBar/config/components#space----associate-mission-control-spaces-with-an-item
 # to indicate active and available mission control spaces.
 sketchybar --add event aerospace_workspace_change
-SPACES=("S" "T" "R" "F" "G" "P") 
+SPACES=("S" "T" "G" "F" "R" "P") 
 SPACE_ICONS=("" "󰈹" "" "󰭹" "" "")
 
 for i in "${!SPACES[@]}"; do

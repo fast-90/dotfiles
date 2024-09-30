@@ -102,7 +102,9 @@ source $ZSH/oh-my-zsh.sh
 # source "$HOME/.rye/env"
 
 # Aliases
+# source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 alias ec="emacsclient"
+alias ll="lsd -hlF"
 source /opt/homebrew/opt/spaceship/spaceship.zsh
 
 export PATH=/Users/duynguyen/bin:$PATH
@@ -129,9 +131,14 @@ if [ "$(whoami)" != $brewser ]; then
 fi
 
 # Completion
-autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
+# autoload bashcompinit && bashcompinit
+# autoload -Uz compinit && compinit
 
 # AWS completion
 complete -C '/usr/local/bin/aws_completer' aws
 
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
+# Zoxide
+eval "$(zoxide init zsh)"

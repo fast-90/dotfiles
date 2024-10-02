@@ -2910,7 +2910,8 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
   (defun dn/python-hook ()
     (setq-local fill-column 79)
     (set (make-local-variable 'compile-command)
-                 (concat "pytest " (buffer-name)))
+         (concat "pytest " (buffer-name)))
+    (auto-revert-mode)
     (display-fill-column-indicator-mode))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)

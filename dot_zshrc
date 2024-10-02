@@ -105,6 +105,7 @@ source $ZSH/oh-my-zsh.sh
 # source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 alias ec="emacsclient"
 alias ll="lsd -hlF"
+alias lla="lsd -halF"
 source /opt/homebrew/opt/spaceship/spaceship.zsh
 
 export PATH=/Users/duynguyen/bin:$PATH

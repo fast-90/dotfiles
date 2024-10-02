@@ -2643,7 +2643,8 @@ Function to archive all done task in current org agenda/file.
        (setq browse-url-generic-program "wslview")
        (setq browse-url-browser-function 'browse-url-generic))
       (dn/is-macos
-       (setq browse-url-browser-function 'browse-url-chrome)))
+       (setq browse-url-firefox-program "/Applications/Firefox.app/Contents/MacOS/firefox")
+       (setq browse-url-browser-function 'browse-url-firefox)))
 #+end_src
 
 ** Edit with Emacs
@@ -2722,7 +2723,8 @@ Function to archive all done task in current org agenda/file.
                                    :completions (:enabled t) ; boolean: true (default) or false
                                    :enabled t                  ; boolean: true or false (default)
                                    :memory :json-false)      ; boolean: true or false (default)
-                    )))))
+                    ))))
+  )
 (use-package jsonrpc)
 #+end_src
 

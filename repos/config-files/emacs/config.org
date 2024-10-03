@@ -3329,7 +3329,16 @@ Docker interface a la Magit (replacement for desktop app):
 #+begin_src emacs-lisp
 (use-package justl
   :bind
-  ("C-x p j" . justl-exec-recipe-in-dir))
+  ("C-x p j" . justl-exec-recipe-in-dir)
+  :init
+  (defun dn/project-justl()
+    "Run `justl` from project root."
+    (interactive)
+    (let* ((default-directory (project-root (project-current t)))) (justl)))
+  (defun dn/project-just-exec-recipe()
+    "Run `justl-exec-recipe-in-dir` from project root."
+    (interactive)
+    (let* ((default-directory (project-root (project-current t)))) (justl-exec-recipe-in-dir))))
 #+end_src
 ** Jupyter
 

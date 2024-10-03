@@ -2668,20 +2668,27 @@ Function to archive all done task in current org agenda/file.
                                   (project-dired "Dired" "D")
                                   (consult-ripgrep "ripgrep" "g")
                                   (magit-project-status "Magit" "m")
-                                  (dn/project-vterm "vterm" "v")))
-  (setq project-vc-extra-root-markers '("pyproject.toml")))
-;; Returns the parent directory containing a .project file, if any,
-;; to override the standard project.el detection logic when needed.
-;; (defun dn/project-override (dir)
-;;   "Returns the parent directory containing a .project.el file, if any,
-;; to override the standard project.el detection logic when needed."
-;;   (let ((override (locate-dominating-file dir ".project.el")))
-;;     (if override
-;;         (cons 'vc override)
-;;       nil)))
-;;   :config
-;;   (add-hook 'project-find-functions #'dn/project-override))
-
+                                  (dn/project-vterm "vterm" "v")
+                                  (dn/project-just-exec-recipe "Execute Just recipe" "j")
+                                  (dn/project-justl "List Just recipes" "J")))
+  (setq project-vc-extra-root-markers '("pyproject.toml"))
+  (defun dn/project-root ()
+  "Return the current project root."
+  (when-let (project (project-current))
+    (project-root project)))
+  (defun dn/project-name (&optional project)
+  "Return the name for PROJECT.
+If PROJECT is not specified, assume current project root."
+  (when-let (root (or project (dn/project-root)))
+    (file-name-nondirectory
+     (directory-file-name
+      (file-name-directory root)))))
+  (defun dn/open-project-in-tab()
+    (interactive)
+    (other-tab-prefix)
+    (call-interactively #'project-switch-project)
+    (tab-rename (dn/project-name))))
+  
 #+end_src
 
 #+begin_src emacs-lisp

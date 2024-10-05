@@ -55,7 +55,6 @@ export WEBKIT_DISABLE_COMPOSITING_MODE = 1
 There are some downsides in using GTK over Lucid, in particular there is a GTK bug which might cause Emacs to crash in daemon mode when the X11 connection is unexpectedly lost. However, I am trying it out right now as I am testing xwidgets with Quarto.
 
 To update, simply run ~sudo make uninstall~, pull the repo and follow the configuration and installation steps above again.
-
 *** Troubleshooting Emacs installation from source
 
 1. =configure: error: The following required libraries were not found: tree-sitter=
@@ -1008,8 +1007,8 @@ The used fonts have different names on different computers:
     (progn
       (setq dn/default-font "Victor Mono"
             dn/default-font-size 13.0)
-      (setq dn/variable-font "IBM Plex Sans"
-            dn/variable-font-size 14.0))
+      (setq dn/variable-font "Atkinson Hyperlegible"
+            dn/variable-font-size 15.0))
   (setq dn/default-font nil
         dn/variable-font nil
         dn/default-font-size nil

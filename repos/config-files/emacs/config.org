@@ -1006,7 +1006,7 @@ The used fonts have different names on different computers:
 
 (if dn/is-macos
     (progn
-      (setq dn/default-font "Input Mono"
+      (setq dn/default-font "Victor Mono"
             dn/default-font-size 13.0)
       (setq dn/variable-font "IBM Plex Sans"
             dn/variable-font-size 14.0))
@@ -1019,9 +1019,10 @@ The used fonts have different names on different computers:
 Set fonts:
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size))
-  (set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size))
-  (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
+(set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size))
+(set-face-attribute 'italic nil :font (font-spec :family dn/default-font :slant 'oblique))
+(set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size))
+(set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
 #+end_src
 
 ** Font settings for daemon mode
@@ -1031,7 +1032,7 @@ Font settings for daemon mode:
 #+begin_src emacs-lisp
 (defun dn/setup-font-faces-daemon()
   (when (daemonp)
-    (set-face-attribute 'tab-bar nil :font (font-spec :family "IBM Plex Mono" :size dn/default-font-size))
+    (set-face-attribute 'tab-bar nil :font (font-spec :family "Victor Mono" :size dn/default-font-size))
     (set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size))
     (set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size))
     (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
@@ -1046,7 +1047,7 @@ Font settings for daemon mode:
 ** all-the-icons
 
 #+begin_src emacs-lisp
-(set-face-attribute 'tab-bar nil :font (font-spec :family "IBM Plex Mono" :size dn/default-font-size))
+(set-face-attribute 'tab-bar nil :font (font-spec :family "Victor Mono" :size dn/default-font-size))
 
 (use-package all-the-icons)
 
@@ -2728,7 +2729,7 @@ If PROJECT is not specified, assume current project root."
                   (:plugins
                    (:rope_autoimport
                     (:code_actions (:enabled t)    ; boolean: true (default) or false
-                                   :completions (:enabled t) ; boolean: true (default) or false
+                                   :completions (:enabled :json-false) ; boolean: true (default) or false
                                    :enabled t                  ; boolean: true or false (default)
                                    :memory :json-false)      ; boolean: true or false (default)
                     ))))

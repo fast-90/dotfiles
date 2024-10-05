@@ -14,7 +14,7 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
                       'exec-and-forget sketchybar',
-                      'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+                      'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=6.0'
                       ]
 
 # Start AeroSpace at login
@@ -219,10 +219,10 @@ r = ['flatten-workspace-tree', 'mode main'] # reset layout
 f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 backspace = ['close-all-windows-but-current', 'mode main']
 
-alt-shift-m = ['join-with left', 'mode main']
-alt-shift-n = ['join-with down', 'mode main']
-alt-shift-e = ['join-with up', 'mode main']
-alt-shift-i = ['join-with right', 'mode main']
+ctrl-alt-shift-m = ['join-with left', 'mode main']
+ctrl-alt-shift-n = ['join-with down', 'mode main']
+ctrl-alt-shift-e = ['join-with up', 'mode main']
+ctrl-alt-shift-i = ['join-with right', 'mode main']
 
 [workspace-to-monitor-force-assignment]
 F = ["built-in", "secondary"]

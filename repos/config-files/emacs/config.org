@@ -1020,7 +1020,6 @@ Set fonts:
 
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size))
-(set-face-attribute 'italic nil :font (font-spec :family dn/default-font :slant 'oblique))
 (set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size))
 (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
 #+end_src
@@ -1032,12 +1031,12 @@ Font settings for daemon mode:
 #+begin_src emacs-lisp
 (defun dn/setup-font-faces-daemon()
   (when (daemonp)
-    (set-face-attribute 'tab-bar nil :font (font-spec :family "Victor Mono" :size dn/default-font-size))
+    ;; (set-face-attribute 'tab-bar nil :font (font-spec :family "Victor Mono" :size dn/default-font-size))
     (set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size))
     (set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size))
-    (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
-    (set-fontset-font t #xe161 (font-spec :family "Material Icons"))
-    (set-fontset-font t #xe897 (font-spec :family "Material Icons"))))
+    (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))))
+    ;; (set-fontset-font t #xe161 (font-spec :family "Material Icons"))
+    ;; (set-fontset-font t #xe897 (font-spec :family "Material Icons"))))
 
 
 (add-hook 'after-init-hook 'dn/setup-font-faces-daemon)
@@ -1047,7 +1046,7 @@ Font settings for daemon mode:
 ** all-the-icons
 
 #+begin_src emacs-lisp
-(set-face-attribute 'tab-bar nil :font (font-spec :family "Victor Mono" :size dn/default-font-size))
+(set-face-attribute 'tab-bar nil :font (font-spec :family dn/default-font :size dn/default-font-size))
 
 (use-package all-the-icons)
 
@@ -1228,9 +1227,7 @@ Currently trying =mood-line= over =doom-modeline= as the latter messes up the ba
   (defun dn/vc-branch-name ()
     "Custom string to display vc (git) branch name on mode-line."
     (if (not (and (buffer-file-name (buffer-base-buffer)) (vc-state (buffer-file-name)))) ""
-      (concat (all-the-icons-octicon "git-branch" :v-adjust 0.04)
-              " "
-              (dn/adjusted-branch-name))))
+      (concat "" " " (dn/adjusted-branch-name))))
   (defun dn/vc-modified-state ()
     "Show a '+' if changes have been added."
     (when-let* ((vc-active (and vc-mode buffer-file-name))
@@ -3062,7 +3059,7 @@ Alternatives include [[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]], [[
 
 *** Pyvenv
 
-I use =pyvenv= to in compination with =pet= to quickly switch to the correct environment. This assures that the LSP and all the relevant tools are running from the correct environment (=mypy= mainly comes to mind). 
+I use =pyvenv= to in combination with =pet= to quickly switch to the correct environment. This assures that the LSP and all the relevant tools are running from the correct environment (=mypy= mainly comes to mind). 
 
 #+begin_src emacs-lisp
 (use-package pyvenv

@@ -143,3 +143,6 @@ source <(fzf --zsh)
 
 # Zoxide
 eval "$(zoxide init zsh)"
+
+# Ollama (for Aider)
+export OLLAMA_API_BASE=http://127.0.0.1:11434 

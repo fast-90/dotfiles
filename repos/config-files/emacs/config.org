@@ -2560,6 +2560,16 @@ Function to archive all done task in current org agenda/file.
 (add-hook 'text-mode-hook #'turn-on-visual-line-mode)
 #+end_src
 
+** Markdown
+
+#+begin_src emacs-lisp
+(use-package markdown
+  :ensure nil
+  :hook
+  (markdown-mode-hook . variable-pitch-mode)
+  (markdown-mode-hook . markdown-toggle-markup-hiding))
+#+end_src
+
 ** Thesaurus
 
 #+begin_src emacs-lisp
@@ -2755,6 +2765,14 @@ See also:
   :after eglot
   :config
   (eglot-booster-mode))
+#+end_src
+** Flymake
+
+#+begin_src emacs-lisp
+(use-package flymake
+  :ensure nil
+  :init
+  (setq flymake-margin-indicators-string '((error "E" compilation-error) (warning "W" compilation-warning) (note "N" compilation-info))))
 #+end_src
 ** Tree-sitter
 

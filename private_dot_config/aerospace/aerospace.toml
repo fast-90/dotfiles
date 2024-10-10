@@ -14,7 +14,7 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
                       'exec-and-forget sketchybar',
-                      'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=6.0'
+                      'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
                       ]
 
 # Start AeroSpace at login
@@ -64,7 +64,7 @@ inner.horizontal = 10
 inner.vertical   = 10
 outer.left       = 10
 outer.bottom     = 10
-outer.top        = [{monitor."built-in" = 1 }, 22]
+outer.top        = [{monitor."built-in" = 26 }, 22]
 outer.right      = 10
 
 # 'Main' binding mode declaration
@@ -116,6 +116,11 @@ ctrl-shift-alt-cmd-m = 'move left'
 ctrl-shift-alt-cmd-n = 'move down'
 ctrl-shift-alt-cmd-e = 'move up'
 ctrl-shift-alt-cmd-i = 'move right'
+
+ctrl-shift-alt-cmd-left = 'move left'
+ctrl-shift-alt-cmd-down = 'move down'
+ctrl-shift-alt-cmd-up = 'move up'
+ctrl-shift-alt-cmd-right = 'move right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
 ctrl-alt-shift-comma = 'resize smart -50'

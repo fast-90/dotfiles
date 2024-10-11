@@ -2730,15 +2730,15 @@ If PROJECT is not specified, assume current project root."
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
   (define-prefix-command 'dn/prog-map)
   (keymap-global-set "C-c l" '("prog" . dn/prog-map))
-  (setq-default eglot-workspace-configuration
-                '(:pylsp
-                  (:plugins
-                   (:rope_autoimport
-                    (:code_actions (:enabled t)    ; boolean: true (default) or false
-                                   :completions (:enabled :json-false) ; boolean: true (default) or false
-                                   :enabled t                  ; boolean: true or false (default)
-                                   :memory :json-false)      ; boolean: true or false (default)
-                    ))))
+  ;; (setq-default eglot-workspace-configuration
+  ;;               '(:pylsp
+  ;;                 (:plugins
+  ;;                  (:rope_autoimport
+  ;;                   (:code_actions (:enabled t)    ; boolean: true (default) or false
+  ;;                                  :completions (:enabled :json-false) ; boolean: true (default) or false
+  ;;                                  :enabled t                  ; boolean: true or false (default)
+  ;;                                  :memory :json-false)      ; boolean: true or false (default)
+  ;;                   ))))
   )
 (use-package jsonrpc)
 #+end_src

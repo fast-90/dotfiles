@@ -1682,6 +1682,9 @@ Idea: use C-p or M-p as the prefix key.
 (keymap-global-set "C-c w n" 'shrink-window)
 (keymap-global-set "C-c w e" 'enlarge-window)
 (keymap-global-set "C-c w 0" 'balance-windows)
+(keymap-global-set "C-c w h" 'split-window-right)
+(keymap-global-set "C-c w v" 'split-window-below)
+(keymap-global-set "C-c w x" 'delete-window)
 
 (defvar-keymap dn/window-resize-repeat-map
   :repeat t

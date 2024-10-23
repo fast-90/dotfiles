@@ -1681,10 +1681,11 @@ Idea: use C-p or M-p as the prefix key.
 (keymap-global-set "C-c w i" 'enlarge-window-horizontally)
 (keymap-global-set "C-c w n" 'shrink-window)
 (keymap-global-set "C-c w e" 'enlarge-window)
-(keymap-global-set "C-c w 0" 'balance-windows)
+(keymap-global-set "C-c w =" 'balance-windows)
 (keymap-global-set "C-c w h" 'split-window-right)
 (keymap-global-set "C-c w v" 'split-window-below)
-(keymap-global-set "C-c w x" 'delete-window)
+(keymap-global-set "C-c w 0" 'delete-window)
+(keymap-global-set "C-c w 1" 'delete-other-windows)
 
 (defvar-keymap dn/window-resize-repeat-map
   :repeat t
@@ -1780,13 +1781,11 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
                    (reusable-frames . visible)
                    (side . right)
                    (window-width . 0.3)) nil ))
-  (dolist (buffer-name-regex '("\\*pytest*\\*.*$" "\\*.*vterm.*\\*" "\\*compilation\\*"))
+  (dolist (buffer-name-regex '("\\*.*vterm.*\\*"))
     (add-to-list 'display-buffer-alist
                  `(,buffer-name-regex
                    (display-buffer-reuse-window display-buffer-at-bottom)
                    (display-buffer-reuse-window display-buffer-in-direction)
-                   ;;display-buffer-in-direction/direction/dedicated is added in emacs27
-                   ;;(direction . bottom)
                    (dedicated . t) ;dedicated is supported in emacs27
                    (reusable-frames . visible)
                    (window-height . 0.3)) nil)))
@@ -3083,6 +3082,8 @@ I use =pyvenv= to in combination with =pet= to quickly switch to the correct env
 
 #+begin_src emacs-lisp
 (use-package pyvenv
+  :hook
+  (magit-status-mode-hook . pyvenv-deactivate)
   :init
   (pyvenv-mode t)
   (pyvenv-tracking-mode t)
@@ -3100,14 +3101,14 @@ I use =pyvenv= to in combination with =pet= to quickly switch to the correct env
 *** Pytest
 
 #+begin_src emacs-lisp
-;; (use-package python-pytest
-;;   :bind (:map python-base-mode-map
-;;               ("C-c t" . python-pytest-dispatch))
-;;   :config
-;;   (transient-append-suffix
-;;     'python-pytest-dispatch
-;;     "-v"
-;;     '("-r" "coverage report" "--cov-report term-missing --cov")))
+(use-package python-pytest
+  :bind (:map python-base-mode-map
+              ("C-c t" . python-pytest-dispatch))
+  :config
+  (transient-append-suffix
+    'python-pytest-dispatch
+    "-v"
+    '("-r" "coverage report" "--cov-report term-missing --cov")))
 #+end_src
 
 Use ~pdb-capf~ for ~completion-at-point-functions~ when using ~pdb~ with ~pytest~:
@@ -3121,6 +3122,21 @@ Use ~pdb-capf~ for ~completion-at-point-functions~ when using ~pdb~ with ~pytest
                       'pdb-capf nil t))))
 #+end_src
 
+#+begin_src emacs-lisp
+;; (use-package xml)
+(use-package python-coverage
+  :after xml)
+#+end_src
+
+*** Py-vterm
+
+#+begin_src emacs-lisp
+(use-package py-vterm-interaction
+  :hook (python-base-mode-hook . py-vterm-interaction-mode)
+  :config
+  (setq-default py-vterm-interaction-repl-program "ipython")
+  (setq-default py-vterm-interaction-silent-cells t))
+#+end_src
 *** Compile
 Testing  ~compile~ as a replacement for ~python-pytest~ as the latter depends on projectile (which I don't use).
 

@@ -2734,6 +2734,7 @@ If PROJECT is not specified, assume current project root."
   ;;                                  :enabled t                  ; boolean: true or false (default)
   ;;                                  :memory :json-false)      ; boolean: true or false (default)
   ;;                   ))))
+  (add-to-list 'eglot-stay-out-of 'flymake)
   )
 (use-package jsonrpc)
 #+end_src
@@ -3116,9 +3117,9 @@ Use ~pdb-capf~ for ~completion-at-point-functions~ when using ~pdb~ with ~pytest
 #+end_src
 
 #+begin_src emacs-lisp
-;; (use-package xml)
+(use-package xml+)
 (use-package python-coverage
-  :after xml)
+  :after xml+)
 #+end_src
 
 *** Py-vterm
@@ -3172,6 +3173,27 @@ Blacken is now disabled by default in favour of =ruff-format=. If it needs to be
               ("C-c C-n" . numpydoc-generate)))
 #+end_src
 
+*** Mypy
+
+Currently testing mypy as a flymake backend instead of via an LSP (as I am also testing basedpyright over python-lsp-server).
+
+#+begin_src emacs-lisp
+(use-package flymake-mypy
+  :ensure (flymake-mypy
+             :type git
+             :host github
+             :repo "com4/flymake-mypy")
+  :hook (python-base-mode-hook . flymake-mypy-enable)
+  :config
+  (defun my/flymake-eglot-fix ()
+    "Add flymake checkers after Eglot replaces the checkers."
+    (when (derived-mode-p 'python-base-mode)
+      ;; re-enable the default python.el checker
+      (add-hook 'flymake-diagnostic-functions 'python-flymake nil t)
+      (flymake-mypy-enable)))
+
+(add-hook 'eglot-managed-mode-hook 'my/flymake-eglot-fix))
+#+end_src
 *** Ruff and ruff-lsp
 
 =ruff= is a Python linter written in Rust and therefore extremely fast. There is also =ruff-lsp= which can be used with =eglot=. Both can be installed with =pip=.
@@ -3186,100 +3208,31 @@ Below are some ways to use it:
 
 **** flymake-ruff
 
-Adds the =flymake-ruff-load= command which loads the hook for current buffer to tell flymake to run checker. Seems kind of manual to invoke it this way, so don't like it as much. There is a recent update, but I haven't tried yet. Currently using =python-lsp-ruff= (plugin for =python-lsp-server=).
+Adds the =flymake-ruff-load= command which loads the hook for current buffer to tell flymake to run checker.
 
 #+begin_src emacs-lisp
-;; (use-package flymake-ruff
-;;   :after eglot
-;;   :ensure (flymake-ruff
-;;              :type git
-;;              :host github
-;;              :repo "erickgnavar/flymake-ruff")
-;;   :hook (eglot-managed-mode-hook . flymake-ruff-load))
-
-
-;; (use-package ruff-fix
-;;   :ensure (ruff-fix :host github :repo "mkt3/ruff-fix.el")
-;;   :bind
-;;   (:map python-base-mode-map ("C-c l I" . ruff-fix-buffer)))
+(use-package flymake-ruff
+  :after eglot
+  :hook (eglot-managed-mode-hook . flymake-ruff-load))
 #+end_src
 
 **** ruff-format
 
-Ruff is now able to format code, just like black but faster. There is also an emacs package to enable this:
+Ruff is now able to format code, just like black but faster. There is also an emacs package to enable this.
+
+Update 2024-10-23: testing ~lazy-ruff~ as it also applies =ruff='s safe fixes.
 
 #+begin_src emacs-lisp
-(use-package ruff-format
-  :hook
-  (python-base-mode-hook . ruff-format-on-save-mode))
+;; (use-package ruff-format
+;;   :hook
+;;   (python-base-mode-hook . ruff-format-on-save-mode))
+
+(use-package lazy-ruff
+  :ensure t
+  :bind (("C-c f" . lazy-ruff-lint-format-dwim))
+  :config
+  (lazy-ruff-global-mode t))
 #+end_src
-
-
-**** =python-flymake-command=
-
-=python-flymake-command= can be added to =eglot-managed-mode-hook='s =flymake-diagnostic-functions=. Seems to work, but there is overlap in error diagnostics (e.g. unused imports).
-
-***** TODO Replace =ruff= with =ruff-lsp=
-
-#+begin_src emacs-lisp
-;; (add-hook 'python-base-mode-hook 'flymake-mode)
-;; (setq python-flymake-command '("ruff" "--quiet" "--stdin-filename=stdin" "-"))
-;; (add-hook 'eglot-managed-mode-hook
-;;     (lambda () (cond ((derived-mode-p 'python-base-mode)
-;;                       (add-hook 'flymake-diagnostic-functions 'python-flymake nil t))
-;;                       ;; if not adding diagnostic functions to other modes just use an if
-;;                       ;; ...
-;;                      (t nil))))
-#+end_src
-
-**** As an LSP with =ruff-lsp=
-
-Can't seem to get it working side-by-side with =pyright=, which is needed to identify imports from environments, autocompletion etc.
-
-#+begin_src emacs-lisp
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;;                '(python-mode . ("ruff-lsp"))))
-
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;;                `(python-mode . ,(eglot-alternatives
-;;                                '(("pylyzer" "--server")
-;;                                  ("pyright-langserver" "--stdio")
-;;                                  ("ruff-lsp"))))))
-#+end_src
-
-*** conda
-
-Although I prefer to use poetry/pyenv to manage my Python coding projects and environments, on most of my computers I also have conda installed. There are a few use cases where this makes sense:
-
-- Other people I work with use conda only and not poetry.
-- I'm trying to clone a repository which uses conda to manage dependencies.
-- I need to install a non-python package via conda.
-
-Furthermore, poetry is actually set up in a way to be able to use with conda as an environment manager (see [[https://github.com/python-poetry/poetry/blob/master/src/poetry/utils/env.py#L675][here]]). See also more info on this [[https://stackoverflow.com/questions/70851048/does-it-make-sense-to-use-conda-poetry][StackOverflow post]].
-
-#+begin_src emacs-lisp
-;; (use-package conda
-;;   :straight t
-;;   :defer t)
-#+end_src
-
-*** Python development workflow with Poetry
-
-Currenly I prefer the following workflow (which seems to work... most of the time):
-
-1) Create a new poetry project via ~poetry init~ or ~poetry new~.
-2) ~git init~ the project root folder.
-3) Create a =.envrc= file with ~layout pyenv {version}~ and ~layout poetry~ in it.
-4) Begin to add dependencies via ~poetry add~ (~-D~ switch for developer dependencies).
-5) Create a ~pyrightconfig.json~ in the project root, and set the =venvPath= and =venv= variables accordingly.
-   
-This has the following benefits compared to other things I tried:
-- Don't need to use ~poetry-tracking-mode~, which can be slow in my experience.
-- Creates replicable configs across machines.
-
-*** Python workflow with PDM [2023-04-20 Thu]
 
 **** Jupyter notebooks
 

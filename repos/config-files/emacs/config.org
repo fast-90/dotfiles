@@ -2734,7 +2734,8 @@ If PROJECT is not specified, assume current project root."
   ;;                                  :enabled t                  ; boolean: true or false (default)
   ;;                                  :memory :json-false)      ; boolean: true or false (default)
   ;;                   ))))
-  (add-to-list 'eglot-stay-out-of 'flymake)
+  (with-eval-after-load "eglot"
+    (add-to-list 'eglot-stay-out-of 'flymake))
   )
 (use-package jsonrpc)
 #+end_src
@@ -2888,25 +2889,6 @@ markdown-mode
 (use-package python
   :ensure nil
   :init
-  ;; (defun python-comint-filter (output)
-  ;;     "Filter out '__PYTHON_EL_' when sending region to inferior Python shell.
-
-  ;; See also: https://stackoverflow.com/questions/75103221/emacs-remove-python-el-eval-message"
-  ;;     (let* ((regexp "^.*__PYTHON_EL_\\(.*\\)\\(.*\\)[[:space:]]*$")
-  ;;            (lines (split-string output "\n"))
-  ;;            (filtered-lines (cl-remove-if (lambda (line)
-  ;;                                            (or (string-match-p regexp line)
-  ;;                                                (string-match-p "^\\s-*$" line))) 
-  ;;                                          lines)))
-
-  ;;       (if (equal (length lines) (length filtered-lines))
-  ;;           output
-  ;;         (mapconcat 'identity filtered-lines "\n"))))
-  ;; (defun my-comint-filter (output)
-  ;;   (let ((regexp "#.*[\\]n\\(\\w+.*\\)\","))
-  ;;     (when (string-match regexp output)
-  ;;       (message (match-string 1 output)))))
-  
   (defun dn/python-comint-filter (output)
       "Filter out '__PYTHON_EL_' when sending region to inferior Python shell.
 
@@ -2926,12 +2908,26 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
         ("'" "'")
         ("\\" "\\"))))
 
+  (defun find-ruff-config-files-in-current-project ()
+    "Search for .ruff.toml, ruff.toml, or pyproject.toml in the project root of the current buffer."
+    (let* ((project-root (project-root (project-current)))  ;; Automatically find project root
+           (files '(".ruff.toml" "ruff.toml" "pyproject.toml")))
+      (if project-root
+          (cl-loop for file in files
+                   for filepath = (expand-file-name file project-root)
+                   when (file-exists-p filepath)
+                   return filepath)
+        nil)))
   (defun dn/python-hook ()
     (setq-local fill-column 79)
     (set (make-local-variable 'compile-command)
          (concat "pytest " (buffer-name)))
     (auto-revert-mode)
-    (display-fill-column-indicator-mode))
+    (display-fill-column-indicator-mode)
+    (setq-local python-flymake-command `("ruff" "check" "--output-format" "concise" "--exit-zero" "--config" ,(find-ruff-config-files-in-current-project)"--quiet" "--stdin-filename" "stdin" "-"))
+    (smerge-mode)
+    ;; (flymake-ruff-load)
+    (flymake-mode))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)
   (python-base-mode-hook . dn/python-hook)
@@ -3211,9 +3207,10 @@ Below are some ways to use it:
 Adds the =flymake-ruff-load= command which loads the hook for current buffer to tell flymake to run checker.
 
 #+begin_src emacs-lisp
-(use-package flymake-ruff
-  :after eglot
-  :hook (eglot-managed-mode-hook . flymake-ruff-load))
+;; (use-package flymake-ruff
+;;   :after flymake
+;;   :config
+;;   (setq flymake-ruff-program-args `("check" "--output-format" "concise" "--stdin-filename" ,(buffer-file-name) "--exit-zero" "--quiet" "-")))
 #+end_src
 
 **** ruff-format
@@ -3223,15 +3220,16 @@ Ruff is now able to format code, just like black but faster. There is also an em
 Update 2024-10-23: testing ~lazy-ruff~ as it also applies =ruff='s safe fixes.
 
 #+begin_src emacs-lisp
-;; (use-package ruff-format
-;;   :hook
-;;   (python-base-mode-hook . ruff-format-on-save-mode))
+(use-package ruff-format
+  :hook
+  (python-base-mode-hook . ruff-fix-on-save-mode)
+  (python-base-mode-hook . ruff-format-on-save-mode))
 
-(use-package lazy-ruff
-  :ensure t
-  :bind (("C-c f" . lazy-ruff-lint-format-dwim))
-  :config
-  (lazy-ruff-global-mode t))
+;; (use-package lazy-ruff
+;;   :ensure t
+;;   :bind (("C-c f" . lazy-ruff-lint-format-dwim))
+;;   :config
+;;   (lazy-ruff-global-mode t))
 #+end_src
 
 **** Jupyter notebooks

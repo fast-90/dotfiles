@@ -970,15 +970,27 @@ brew install coreutils
   (meow-thing-register 'quote
                        '(regexp "\"" "\"")
                        '(regexp "\"" "\""))
+  (meow-thing-register 'quote-single
+                       '(regexp "'" "'")
+                       '(regexp "'" "'"))
   (meow-thing-register 'angled
                        '(regexp "<" ">")
                        '(regexp "<" ">"))
   (add-to-list 'meow-char-thing-table '(?q . quote))
+  (add-to-list 'meow-char-thing-table '(?Q . quote-single))
   (add-to-list 'meow-char-thing-table '(?a . angled))
   (meow-setup-colemak)
   (meow-global-mode))
 #+end_src
 
+** Meow Treesit
+
+#+begin_src emacs-lisp
+(use-package meow-tree-sitter
+  :config
+  (meow-tree-sitter-register-defaults))
+
+#+end_src
 ** Meow vterm
 
 This package is required to enable expected behaviour with Meow keybindings in normal mode (see also [[https://github.com/meow-edit/meow/issues/467][here]]).

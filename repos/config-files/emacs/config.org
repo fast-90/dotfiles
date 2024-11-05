@@ -2748,8 +2748,8 @@ If PROJECT is not specified, assume current project root."
   ;;                                  :enabled t                  ; boolean: true or false (default)
   ;;                                  :memory :json-false)      ; boolean: true or false (default)
   ;;                   ))))
-  (with-eval-after-load "eglot"
-    (add-to-list 'eglot-stay-out-of 'flymake))
+  ;; (with-eval-after-load "eglot"
+  ;;   (add-to-list 'eglot-stay-out-of 'flymake))
   )
 (use-package jsonrpc)
 #+end_src
@@ -2941,6 +2941,7 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
     (setq-local python-flymake-command `("ruff" "check" "--output-format" "concise" "--exit-zero" "--config" ,(find-ruff-config-files-in-current-project)"--quiet" "--stdin-filename" "stdin" "-"))
     (smerge-mode)
     ;; (flymake-ruff-load)
+    (setq-local eglot-stay-out-of '("flymake"))
     (flymake-mode))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)

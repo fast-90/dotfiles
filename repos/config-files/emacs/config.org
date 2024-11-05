@@ -3296,14 +3296,18 @@ Syntax highlighting:
     (interactive "sImage name: ")
     (if-let (project (project-current))
         (let ((default-directory (project-root project)))
-          (async-shell-command (concat "docker build -t " image-name " -f " (buffer-file-name) " .")))
-      (async-shell-command (concat "docker build -t " image-name " .")))))
+          (async-shell-command (concat docker-command " build -t " image-name " -f " (buffer-file-name) " .")))
+      (async-shell-command (concat "docker build -t " image-name " -f " (buffer-file-name) " .")))))
 #+end_src
 
 Docker interface a la Magit (replacement for desktop app):
 
 #+begin_src emacs-lisp
-(use-package docker)
+(use-package docker
+  :config
+  (setopt docker-command "podman")
+  (when (elpaca-installed-p 'vterm)
+        (setq docker-run-async-with-buffer-function #'docker-run-async-with-buffer-vterm)))
 #+end_src
 ** Rust
 

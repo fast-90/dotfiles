@@ -1876,7 +1876,9 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 
 #+begin_src emacs-lisp
 (use-package magit
-  :after transient)
+  :after transient
+  :config
+  (setopt magit-process-popup-time 5))
 
 (use-package transient
   :after seq)

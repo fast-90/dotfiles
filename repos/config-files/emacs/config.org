@@ -1772,18 +1772,18 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
-	    "\\*Warnings\\*"
+	  "\\*Warnings\\*"
           "Output\\*$"
           "traceback\\*$"
           "error\\*$"
           "\\*Async Shell Command\\*"
           help-mode
           helpful-mode
-	    "\\*eldoc\\*"
-	    "\\*PDF-Occur\\*"
-	    "\\*.*vterm.*\\*"
-	    "\\*pytest\\*"
-            "\\*ChatGPT*\\*.*$"
+	  "\\*eldoc\\*"
+	  "\\*PDF-Occur\\*"
+	  "\\*.*vterm.*\\*"
+	  ;; "\\*pytest\\*"
+          "\\*ChatGPT*\\*.*$"
           compilation-mode))
 
   (setq popper-group-function #'popper-group-by-project) 
@@ -2941,7 +2941,7 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
          (concat "pytest " (buffer-name)))
     (auto-revert-mode)
     (display-fill-column-indicator-mode)
-    (setq-local python-flymake-command `("ruff" "check" "--output-format" "concise" "--exit-zero" "--config" ,(find-ruff-config-files-in-current-project)"--quiet" "--stdin-filename" "stdin" "-"))
+    (setq-local python-flymake-command `("ruff" "check" "--output-format" "concise" "--exit-zero" "--config" ,(find-ruff-config-files-in-current-project) "--quiet" "--stdin-filename" "stdin" "-"))
     (smerge-mode)
     ;; (flymake-ruff-load)
     (setq-local eglot-stay-out-of '("flymake"))
@@ -3204,9 +3204,9 @@ Currently testing mypy as a flymake backend instead of via an LSP (as I am also 
     (when (derived-mode-p 'python-base-mode)
       ;; re-enable the default python.el checker
       (add-hook 'flymake-diagnostic-functions 'python-flymake nil t)
-      (flymake-mypy-enable)))
+      (flymake-mypy-enable))))
 
-(add-hook 'eglot-managed-mode-hook 'my/flymake-eglot-fix))
+;; (add-hook 'eglot-managed-mode-hook 'my/flymake-eglot-fix))
 #+end_src
 *** Ruff and ruff-lsp
 

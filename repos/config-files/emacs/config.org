@@ -3294,13 +3294,16 @@ Syntax highlighting:
   :mode ("\\.Dockerfile\\'" . dockerfile-ts-mode)
   :bind (:map dockerfile-ts-mode-map ("C-c C-c" . docker-build))
   :init
-  (defun docker-build(image-name)
+  (defvar docker-build-directory nil)
+  (defun docker-build (image-name)
     "Build image from current Dockerfile."
     (interactive "sImage name: ")
-    (if-let (project (project-current))
-        (let ((default-directory (project-root project)))
-          (async-shell-command (concat docker-command " build -t " image-name " -f " (buffer-file-name) " .")))
-      (async-shell-command (concat "docker build -t " image-name " -f " (buffer-file-name) " .")))))
+    (let ((build-directory (or docker-build-directory
+                               (if-let (project (project-current))
+                                   (project-root project)
+                                 default-directory))))
+      (let ((default-directory build-directory))
+        (compile (concat docker-command " build -t " image-name " -f " (buffer-file-name) " ."))))))
 #+end_src
 
 Docker interface a la Magit (replacement for desktop app):

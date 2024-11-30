@@ -524,28 +524,31 @@ Also hides other apps"
 #+begin_src emacs-lisp
 (elpaca-wait)
 
-  (use-package dired
-    :ensure nil
-    :hook
-    (dired-mode-hook . dired-omit-mode)
-    (dired-mode-hook . dired-hide-details-mode)
-    :bind
-    (:map dired-mode-map (")" . dired-omit-mode)
-          :map dired-jump-map ("j" . nil))
-    :custom
-    (dired-listing-switches "-agho --group-directories-first")
-    (dired-kill-when-opening-new-dired-buffer t)
-    :init
-    (setq dired-omit-files "^[.#].+[^.\n]$")
-    (setq dired-dwim-target t)
-    (setq dired-auto-revert-buffer t)
-    (when dn/is-macos
-      (setq dired-use-ls-dired t
-            insert-directory-program (executable-find "gls"))))
+(use-package dired
+  :ensure nil
+  :hook
+  (dired-mode-hook . dired-omit-mode)
+  (dired-mode-hook . dired-hide-details-mode)
+  :bind
+  (:map dired-mode-map
+        (")" . dired-omit-mode)
+        ("," . (lambda () (interactive) (shell-command "open .")))
+        :map dired-jump-map ("j" . nil))
+  :custom
+  (dired-listing-switches "-agho --group-directories-first")
+  (dired-kill-when-opening-new-dired-buffer t)
+  :init
 
-  (use-package nerd-icons-dired
-    :after dired
-    :hook (dired-mode-hook . nerd-icons-dired-mode))
+  (setq dired-omit-files "^[.#].+[^.\n]$")
+  (setq dired-dwim-target t)
+  (setq dired-auto-revert-buffer t)
+  (when dn/is-macos
+    (setq dired-use-ls-dired t
+          insert-directory-program (executable-find "gls"))))
+
+(use-package nerd-icons-dired
+  :after dired
+  :hook (dired-mode-hook . nerd-icons-dired-mode))
 #+end_src
 
 *** MacOS specific setting for Dired

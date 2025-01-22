@@ -160,12 +160,12 @@ Elpaca is an elisp package manager which installs packages asynchronously. It's 
 Installing as per the instructions:
 
 #+begin_src emacs-lisp :tangle (expand-file-name "init.el" user-emacs-directory)
-(defvar elpaca-installer-version 0.7)
+(defvar elpaca-installer-version 0.9)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1
+                              :ref nil :depth 1 :inherit ignore
                               :files (:defaults "elpaca-test.el" (:exclude "extensions"))
                               :build (:not elpaca--activate-package)))
 (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
@@ -177,18 +177,18 @@ Installing as per the instructions:
     (make-directory repo t)
     (when (< emacs-major-version 28) (require 'subr-x))
     (condition-case-unless-debug err
-        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                 ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                 ,@(when-let ((depth (plist-get order :depth)))
-                                                     (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                 ,(plist-get order :repo) ,repo))))
-                 ((zerop (call-process "git" nil buffer t "checkout"
-                                       (or (plist-get order :ref) "--"))))
-                 (emacs (concat invocation-directory invocation-name))
-                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                 ((require 'elpaca))
-                 ((elpaca-generate-autoloads "elpaca" repo)))
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
             (progn (message "%s" (buffer-string)) (kill-buffer buffer))
           (error "%s" (with-current-buffer buffer (buffer-string))))
       ((error) (warn "%s" err) (delete-directory repo 'recursive))))
@@ -239,7 +239,7 @@ Installing as per the instructions:
 This =use-package= extension allows us to use the =:ensure-system-package= keyword to only install/load packages if a certain binary package is available.
 
 #+begin_src emacs-lisp :tangle (expand-file-name "init.el" user-emacs-directory)
-(use-package use-package-ensure-system-package)
+;;(use-package use-package-ensure-system-package) I think this is now built-in? Delete later.
 #+end_src
 
 *** Load literate config with org mode
@@ -247,9 +247,10 @@ This =use-package= extension allows us to use the =:ensure-system-package= keywo
 Use latest version of ~org~.
 
 #+begin_src emacs-lisp :tangle (expand-file-name "init.el" user-emacs-directory)
-(use-package org
-    :ensure (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :tag "release_9.6.13"))
+;;(use-package org
+;;    :ensure (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git" :tag "release_9.6.13"))
 
+(use-package org)
 ;; Wait until org is loaded before loading literate config.
 (elpaca-wait)
 

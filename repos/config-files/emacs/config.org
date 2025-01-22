@@ -910,6 +910,7 @@ brew install coreutils
      '("p" . meow-yank)
      '("P" . avy-pop-mark)
      '("q" . meow-quit)
+     '("Q" . meow-goto-line)
      '("r" . meow-back-word)
      '("R" . meow-back-symbol)
      '("s" . meow-mark-word)
@@ -1364,6 +1365,7 @@ Currently trying =mood-line= over =doom-modeline= as the latter messes up the ba
 (use-package vterm
   :ensure-system-package cmake
   :bind (("C-c v" . dn/project-vterm)
+         ("C-c V" . vterm)
          :map vterm-mode-map
          ("C-b" . vterm--self-insert))
   :init

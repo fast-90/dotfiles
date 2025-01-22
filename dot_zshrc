@@ -120,7 +120,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # eval "$(pyenv init -)"
 # . "$HOME/.cargo/env"
 
-alias k="kubectl"
 alias av="source .venv/bin/activate"
 export PATH="/opt/homebrew/bin/:/opt/openjdk/bin:$PATH"
 
@@ -146,3 +145,9 @@ eval "$(zoxide init zsh)"
 
 # Ollama (for Aider)
 export OLLAMA_API_BASE=http://127.0.0.1:11434 
+
+# Kubernetes
+alias k="kubectl"
+alias kdro='kubectl --dry-run=client -o yaml'
+# apk add bash-completion
+source <(kubectl completion zsh)

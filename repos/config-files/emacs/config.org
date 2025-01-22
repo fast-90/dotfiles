@@ -411,6 +411,17 @@ Add folder with custom libraries to load-path. Currently only used for =mail-con
 (push (expand-file-name "lisp" user-emacs-directory) load-path)
 #+end_src
 
+** Ultrascroll mode (smooth scrolling)
+
+#+begin_src emacs-lisp
+(use-package ultra-scroll
+  :ensure (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101 ; important!
+    scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+#+end_src
 * OS specific settings
 
 ** Define booleans for OS

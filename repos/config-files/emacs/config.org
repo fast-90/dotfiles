@@ -3197,7 +3197,13 @@ Update 2024-10-23: testing ~lazy-ruff~ as it also applies =ruff='s safe fixes.
 (use-package ruff-format
   :hook
   (python-base-mode-hook . ruff-fix-on-save-mode)
-  (python-base-mode-hook . ruff-format-on-save-mode))
+  (python-base-mode-hook . ruff-format-on-save-mode)
+  :init
+  (reformatter-define ruff-fix
+  :program ruff-format-command
+  :args (list "check" "--fix" "--exit-zero" "--stdin-filename" (or (buffer-file-name) input-file))
+  :lighter " RuffFix"
+  :group 'ruff-format))
 
 ;; (use-package lazy-ruff
 ;;   :ensure t

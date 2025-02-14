@@ -1786,14 +1786,37 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 
 #+begin_src emacs-lisp
 (use-package magit
-  :after transient
+  :after (with-editor transient)
   :config
   (setopt magit-process-popup-time 5))
+
+(use-package with-editor)
 
 (use-package transient
   :after seq)
 
+(use-package closql
+  :after (emacsql))
+
+(use-package forge
+  :after (closql magit))
+
 (use-package seq)
+
+(use-package pr-review
+  :bind
+  (:map pr-review-mode-map
+        ("M-o" . forward-button)
+        :map magit-mode-map
+        ("S-<return>" . dn/pr-review-via-forge))
+  :config
+  (defun dn/pr-review-via-forge ()
+    (interactive)
+    (if-let* ((target (forge--browse-target))
+              (url (if (stringp target) target (forge-get-url target)))
+              (rev-url (pr-review-url-parse url)))
+        (pr-review url)
+      (user-error "No PR to review at point"))))
 #+end_src
 
 #+begin_src emacs-lisp

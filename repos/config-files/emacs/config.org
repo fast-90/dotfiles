@@ -3495,9 +3495,15 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   :after yaml-mode
   :hook
   (yaml-ts-mode-hook . highlight-indent-guides-mode)
+  (yaml-mode-hook . highlight-indent-guides-mode)
   :config
-  (setq highlight-indent-guides-method 'character)
-  (set-face-foreground 'highlight-indent-guides-character-face "dimgray"))
+  (setopt highlight-indent-guides-method 'column)
+  (setopt highlight-indent-guides-auto-enabled nil)
+  (setopt highlight-indent-guides-auto-odd-face-perc 97)
+  (setopt highlight-indent-guides-auto-even-face-perc 10)
+  (modus-themes-with-colors
+    (set-face-background 'highlight-indent-guides-odd-face bg-inactive)
+    (set-face-background 'highlight-indent-guides-even-face bg-active)))
 #+end_src
 ** AutoHotKey
 

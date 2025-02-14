@@ -3308,87 +3308,87 @@ Docker interface a la Magit (replacement for desktop app):
 ** Jupyter
 
 #+begin_src emacs-lisp
-(use-package jupyter
-  :bind (:map jupyter-repl-mode-map 
-              ("C-j" . 'jupyter-repl-forward-cell)
-              ("C-k" . 'jupyter-repl-backward-cell)
-              :map org-mode-map
-              ("C-c j" . 'dn/jupyter-org-hydra/body))
-  :init
-  (org-babel-do-load-languages
-   'org-babel-load-languages            ; Languages allowed to run in Org Src blocks
-   (append org-babel-load-languages '((jupyter . t))))
-  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-                                                       (:session . "py")
-                                                       (:kernel . "python3")))
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-  (org-babel-jupyter-override-src-block "python")
-  ;; To ensure python src blocks are opened in python-ts-mode
-  (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
-  (defun dn/jupyter-org-insert-src-block-below ()
-    (interactive)
-    (let ((current-prefix-arg '(4))) (call-interactively 'jupyter-org-insert-src-block)))
-  (defhydra dn/jupyter-org-move-src-block-hydra ()
-    "Move block"
-    ("j" (jupyter-org-move-src-block t) "Move down")
-    ("k" jupyter-org-move-src-block "Move up")
-    ("q" nil "quit"))
-  (defun dn/jupyter-org-hydra/body ()
-    "Custom hydra for jupyter commands.
-Inspired by jupyter-org-hydra from emacs-jupyter."
-    (interactive)
-    (unless (require 'hydra nil t)
-      (error "Package `hydra' not installed"))
-    ;; unbinding this function and define the hydra
-    (fmakunbound 'dn/jupyter-org-hydra/body)
-    (eval `(defhydra dn/jupyter-org-hydra (:color blue :hint nil)
-             "
-          Execute                     Navigate            Edit              Misc
--------------------------------------------------------------------------------------------
-           _e_: current               _k_: previous       _C-k_: move up    _/_: inspect
-         _C-e_: current to next       _K_: previous busy  _C-j_: move down  _l_: clear result
-         _M-e_: to point              _j_: next           _x_: kill         _L_: clear all
-       _C-M-e_: subtree to point      _J_: next busy      _c_: copy         _i_: interrupt
-           _E_: Restart/buffer        _g_: visible        _o_: clone      _C-s_: scratch buffer
-         _C-E_: Restart/to point      _G_: any            _m_: merge
-         _M-E_: Restart/block     _<tab>_: (un)fold       _s_: split
-           _r_: Goto repl             ^ ^                 _a_: insert above
-           ^ ^                        ^ ^                 _b_: insert below
-           ^ ^                        ^ ^                 _h_: header"
-             ("e" org-ctrl-c-ctrl-c :color red)
-             ("C-e" jupyter-org-execute-and-next-block :color red)
-             ("M-e" jupyter-org-execute-to-point)
-             ("C-M-e" jupyter-org-execute-subtree)
-             ("E" jupyter-org-restart-kernel-execute-buffer)
-             ("C-E" jupyter-org-restart-and-execute-to-point)
-             ("M-E" jupyter-org-restart-kernel-execute-block)
-             ("r" org-babel-switch-to-session)
+  ;; (use-package jupyter
+  ;;   :bind (:map jupyter-repl-mode-map 
+  ;;               ("C-j" . 'jupyter-repl-forward-cell)
+  ;;               ("C-k" . 'jupyter-repl-backward-cell)
+  ;;               :map org-mode-map
+  ;;               ("C-c j" . 'dn/jupyter-org-hydra/body))
+  ;;   :init
+  ;;   (org-babel-do-load-languages
+  ;;    'org-babel-load-languages            ; Languages allowed to run in Org Src blocks
+  ;;    (append org-babel-load-languages '((jupyter . t))))
+  ;;   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
+  ;;                                                        (:session . "py")
+  ;;                                                        (:kernel . "python3")))
+  ;;   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  ;;   (org-babel-jupyter-override-src-block "python")
+  ;;   ;; To ensure python src blocks are opened in python-ts-mode
+  ;;   (setf (alist-get "python" org-src-lang-modes nil nil #'equal) 'python-ts)
+  ;;   (defun dn/jupyter-org-insert-src-block-below ()
+  ;;     (interactive)
+  ;;     (let ((current-prefix-arg '(4))) (call-interactively 'jupyter-org-insert-src-block)))
+  ;;   (defhydra dn/jupyter-org-move-src-block-hydra ()
+  ;;     "Move block"
+  ;;     ("j" (jupyter-org-move-src-block t) "Move down")
+  ;;     ("k" jupyter-org-move-src-block "Move up")
+  ;;     ("q" nil "quit"))
+  ;;   (defun dn/jupyter-org-hydra/body ()
+  ;;     "Custom hydra for jupyter commands.
+  ;; Inspired by jupyter-org-hydra from emacs-jupyter."
+  ;;     (interactive)
+  ;;     (unless (require 'hydra nil t)
+  ;;       (error "Package `hydra' not installed"))
+  ;;     ;; unbinding this function and define the hydra
+  ;;     (fmakunbound 'dn/jupyter-org-hydra/body)
+  ;;     (eval `(defhydra dn/jupyter-org-hydra (:color blue :hint nil)
+  ;;              "
+  ;;           Execute                     Navigate            Edit              Misc
+  ;; -------------------------------------------------------------------------------------------
+  ;;            _e_: current               _k_: previous       _C-k_: move up    _/_: inspect
+  ;;          _C-e_: current to next       _K_: previous busy  _C-j_: move down  _l_: clear result
+  ;;          _M-e_: to point              _j_: next           _x_: kill         _L_: clear all
+  ;;        _C-M-e_: subtree to point      _J_: next busy      _c_: copy         _i_: interrupt
+  ;;            _E_: Restart/buffer        _g_: visible        _o_: clone      _C-s_: scratch buffer
+  ;;          _C-E_: Restart/to point      _G_: any            _m_: merge
+  ;;          _M-E_: Restart/block     _<tab>_: (un)fold       _s_: split
+  ;;            _r_: Goto repl             ^ ^                 _a_: insert above
+  ;;            ^ ^                        ^ ^                 _b_: insert below
+  ;;            ^ ^                        ^ ^                 _h_: header"
+  ;;              ("e" org-ctrl-c-ctrl-c :color red)
+  ;;              ("C-e" jupyter-org-execute-and-next-block :color red)
+  ;;              ("M-e" jupyter-org-execute-to-point)
+  ;;              ("C-M-e" jupyter-org-execute-subtree)
+  ;;              ("E" jupyter-org-restart-kernel-execute-buffer)
+  ;;              ("C-E" jupyter-org-restart-and-execute-to-point)
+  ;;              ("M-E" jupyter-org-restart-kernel-execute-block)
+  ;;              ("r" org-babel-switch-to-session)
 
-             ("k" org-babel-previous-src-block :color red)
-             ("K" jupyter-org-previous-busy-src-block :color red)
-             ("j" org-babel-next-src-block :color red)
-             ("J" jupyter-org-next-busy-src-block :color red)
-             ("g" jupyter-org-jump-to-visible-block)
-             ("G" jupyter-org-jump-to-block)
-             ("<tab>" org-cycle :color red)
+  ;;              ("k" org-babel-previous-src-block :color red)
+  ;;              ("K" jupyter-org-previous-busy-src-block :color red)
+  ;;              ("j" org-babel-next-src-block :color red)
+  ;;              ("J" jupyter-org-next-busy-src-block :color red)
+  ;;              ("g" jupyter-org-jump-to-visible-block)
+  ;;              ("G" jupyter-org-jump-to-block)
+  ;;              ("<tab>" org-cycle :color red)
 
-             ("C-k" jupyter-org-move-src-block :color red)
-             ("C-j" (jupyter-org-move-src-block t) :color red)
-             ("x" jupyter-org-kill-block-and-results)
-             ("c" jupyter-org-copy-block-and-results)
-             ("o" (jupyter-org-clone-block t))
-             ("m" jupyter-org-merge-blocks)
-             ("s" jupyter-org-split-src-block)
-             ("a" (jupyter-org-insert-src-block nil current-prefix-arg))
-             ("b" (jupyter-org-insert-src-block t current-prefix-arg))
-             ("l" org-babel-remove-result)
-             ("L" jupyter-org-clear-all-results)
-             ("h" jupyter-org-edit-header)
+  ;;              ("C-k" jupyter-org-move-src-block :color red)
+  ;;              ("C-j" (jupyter-org-move-src-block t) :color red)
+  ;;              ("x" jupyter-org-kill-block-and-results)
+  ;;              ("c" jupyter-org-copy-block-and-results)
+  ;;              ("o" (jupyter-org-clone-block t))
+  ;;              ("m" jupyter-org-merge-blocks)
+  ;;              ("s" jupyter-org-split-src-block)
+  ;;              ("a" (jupyter-org-insert-src-block nil current-prefix-arg))
+  ;;              ("b" (jupyter-org-insert-src-block t current-prefix-arg))
+  ;;              ("l" org-babel-remove-result)
+  ;;              ("L" jupyter-org-clear-all-results)
+  ;;              ("h" jupyter-org-edit-header)
 
-             ("/" jupyter-org-inspect-src-block)
-             ("i" jupyter-org-interrupt-kernel)
-             ("C-s" org-babel-jupyter-scratch-buffer)))
-    (call-interactively #'dn/jupyter-org-hydra/body)))
+  ;;              ("/" jupyter-org-inspect-src-block)
+  ;;              ("i" jupyter-org-interrupt-kernel)
+  ;;              ("C-s" org-babel-jupyter-scratch-buffer)))
+  ;;     (call-interactively #'dn/jupyter-org-hydra/body)))
 #+end_src
 
 To ensure that =pandas.DataFrame= objects are displayed as =org= tables, add the following to the Jupyter startup file (=~/.ipython/profile_default/startup/50-middle.py=):
@@ -3417,26 +3417,26 @@ See also [[https://orgmode.org/manual/Using-Header-Arguments.html][here]] for mo
 Using ~ox-ipynb~ to convert =.org= files to =.ipynb= files. The built in function only support the conversion of =ipython= source blocks though, so I need to make some adjustments (as I prefer to use =python= source blocks with ~emacs-jupyter~.
 
 #+begin_src emacs-lisp
-(use-package ox-ipynb
-  :ensure (:host github :repo "jkitchin/ox-ipynb")
-  :after ox
-  :init
-  (defun my-replace-python-with-ipython (orig-fun &rest args)
-    "Replace all occurrences of \"begin_src python\" with \"begin_src ipython\" in the selected Org files
-   before calling the original function."
-    (let ((org-file (car args))) ; Get the selected Org file
-      (with-temp-buffer
-        (insert-file-contents org-file) ; Load the contents of the Org file into the buffer
-        (goto-char (point-min))
-        (while (search-forward "begin_src python" nil t)
-          (replace-match "begin_src ipython" nil t))
-        (let* ((org-dir (file-name-directory org-file))
-               (new-file (concat org-dir "ipython-" (file-name-nondirectory org-file))))
-          (write-region (point-min) (point-max) new-file) ; Save the modified buffer to a new file in the same directory
-          (unwind-protect
-              (apply orig-fun (list new-file)) ; Call the original function with the new file as argument
-            (when (file-exists-p new-file) (delete-file new-file))))))) ; Delete the temporary file after exporting is done
-  )
+  ;; (use-package ox-ipynb
+  ;;   :ensure (:host github :repo "jkitchin/ox-ipynb")
+  ;;   :after ox
+  ;;   :init
+  ;;   (defun my-replace-python-with-ipython (orig-fun &rest args)
+  ;;     "Replace all occurrences of \"begin_src python\" with \"begin_src ipython\" in the selected Org files
+  ;;    before calling the original function."
+  ;;     (let ((org-file (car args))) ; Get the selected Org file
+  ;;       (with-temp-buffer
+  ;;         (insert-file-contents org-file) ; Load the contents of the Org file into the buffer
+  ;;         (goto-char (point-min))
+  ;;         (while (search-forward "begin_src python" nil t)
+  ;;           (replace-match "begin_src ipython" nil t))
+  ;;         (let* ((org-dir (file-name-directory org-file))
+  ;;                (new-file (concat org-dir "ipython-" (file-name-nondirectory org-file))))
+  ;;           (write-region (point-min) (point-max) new-file) ; Save the modified buffer to a new file in the same directory
+  ;;           (unwind-protect
+  ;;               (apply orig-fun (list new-file)) ; Call the original function with the new file as argument
+  ;;             (when (file-exists-p new-file) (delete-file new-file))))))) ; Delete the temporary file after exporting is done
+  ;;   )
 #+end_src
 
 *** code-cells

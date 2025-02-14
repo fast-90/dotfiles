@@ -1389,29 +1389,21 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
               ("C-<backspace>" . vertico-directory-delete-word)))
 #+end_src
 
-*** Vertico-posframe
+*** Vertico-multiform
 
 #+begin_src emacs-lisp
 (use-package vertico-posframe
   :after vertico
   :init
-  ;; (vertico-posframe-mode)
   (vertico-multiform-mode)
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
-  ;; (setq vertico-multiform-commands
-  ;;     '((consult-line (:not posframe))
-  ;;       (consult-ripgrep (:not posframe))
-  ;;       (consult-flymake (:not posframe))
-  ;;       (consult-flycheck (:not posframe))
-  ;;       (xref-find-references (:not posframe))
-  ;;       (lsp-copilot-find-references (:not posframe))
-  ;;       (xref-show-xrefs-function (:not posframe))
-  ;;       (t posframe)))
   (setq vertico-multiform-commands
         '((execute-extended-command posframe)
           ("elpaca" posframe)
+          ("magit" posframe)
+          ("justl" posframe)
           ("helpful" posframe)))
   (setq vertico-multiform-categories
         '((file posframe)

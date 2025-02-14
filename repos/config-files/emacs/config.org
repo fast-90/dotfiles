@@ -1594,18 +1594,6 @@ Idea: use C-p or M-p as the prefix key.
 
 * Windows and movement
 
-** ace-window
-
-#+begin_src emacs-lisp
-;; (use-package ace-window
-;;   :bind
-;;   (;("C-c w" . ace-window)
-;;    ("C-c o" . other-window))
-;;   :config
-;;   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-;;         aw-dispatch-always t))
-#+end_src
-  
 ** My window config
 
 #+begin_src emacs-lisp

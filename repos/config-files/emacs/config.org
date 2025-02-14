@@ -3532,30 +3532,6 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   (csv-mode-hook . csv-align-mode))
 #+end_src
 
-* PDF
-
-#+begin_src emacs-lisp
-;; (use-package pdf-tools
-;;   :init
-;;   (pdf-tools-install))
-
-;; (use-package pdf-occur
-;;   :ensure nil
-;;   :after pdf-tools
-;;   :bind (:map pdf-occur-buffer-mode-map
-;;               ("C-<return>" . pdf-occur-view-occurrence)
-;;               :map pdf-view-mode-map
-;;               ("C-s" . pdf-occur)))
-
-;; ;; pdf-view-restore remembers last position in pdf before closing
-
-;; (use-package pdf-view-restore
-;;   :after pdf-tools
-;;   :hook
-;;   (pdf-view-mode-hook . pdf-view-restore-mode)
-;;   :custom
-;;   (pdf-view-restore-file-name (expand-file-name ".pdf-view-restore" user-emacs-directory))) 
-#+end_src
 
 * Ledger
 
@@ -3580,12 +3556,6 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
     (ledger-mode-hook . ledger-flymake-enable)))
     ;; (ledger-report-mode-hook . so-long-minor-mode)
     ;; (ledger-report-after-report-hook . so-long-minor-mode)))
-#+end_src
-
-* Email
-
-#+begin_src emacs-lisp
-;; (unless (string-match "xomnia" system-name) (require 'mail-config))
 #+end_src
 
 * ERC
@@ -3619,38 +3589,6 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   (setq erc-auto-set-away t))
 #+end_src
 
-** Bitlbee specific commands
-
-#+begin_src emacs-lisp
-(when dn/is-wsl
-  (defun dn/msteams-add-contact-prompt (mailaddress)
-    "Prompts for MAILADDRESS and inserts the Bitlbee add command."
-    (interactive
-     (list (read-string "E-mail address: " "@kpmg.nl"))
-     (move-beginning-of-line))
-    (let* ((command-output (shell-command-to-string (concat "az ad user show --id " mailaddress)))
-           (json-object (json-read-from-string command-output))
-           (id (assoc-default 'id json-object))
-           (full-name (replace-regexp-in-string ",? " "" (assoc-default 'displayName json-object))))
-      (insert (concat "add eionrobb-msteams orgid:" id " " full-name)))))
-
-(when dn/is-wsl
-  (defun dn/msteams-add-contact-from-info ()
-    (interactive)
-    (let* ((id nil)
-           (name nil)
-           (current (save-excursion (point))))
-      (goto-char (point-max))
-      (when (search-backward-regexp "<@Duy> info \\(orgid.*?\\) " nil t)
-        (setq id (match-string 1)))
-      (goto-char (point-max))
-      (when (search-backward-regexp "<root> Display Name: \\(.*\\)" nil t)
-        (setq name (replace-regexp-in-string "[, ]" "" (match-string 1))))
-      (goto-char current)
-      (insert (format "rename %s %s" id name)))))
-
-#+end_src
-
 * Elfeed
 
 #+begin_src emacs-lisp
@@ -3664,15 +3602,6 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/repos/config-files/emacs/elfeed.org")))
-#+end_src
-
-* ChatGPT
-
-#+begin_src emacs-lisp
-;; (use-package chatgpt-shell
-;;   :straight t
-;;   :custom
-;;   (chatgpt-shell-openai-key ""))
 #+end_src
 
 * GPTel

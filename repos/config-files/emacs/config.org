@@ -1689,12 +1689,13 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 	  "\\*.*vterm.*\\*"
 	  ;; "\\*pytest\\*"
           "\\*ChatGPT*\\*.*$"
+          "\\*DeepSeek*\\*.*$"
           compilation-mode))
 
   (setq popper-group-function #'popper-group-by-project) 
   (popper-mode +1)
   (popper-echo-mode +1)
-  (dolist (buffer-name-regex '("\\*ChatGPT*\\*.*$" "\\*eldoc*\\*.*$"))
+  (dolist (buffer-name-regex '("\\*ChatGPT*\\*.*$" "\\*DeepSeek*\\*.*$" "\\*eldoc*\\*.*$"))
     (add-to-list 'display-buffer-alist
                  `(,buffer-name-regex
                    (display-buffer-reuse-window display-buffer-in-side-window)

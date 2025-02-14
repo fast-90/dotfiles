@@ -1217,7 +1217,7 @@ Font settings for daemon mode:
           (nil . (dn/telephone-line-buffer-segment))))
   (setq telephone-line-rhs
         '((nil    . (telephone-line-misc-info-segment
-                     telephone-line-flymake-segment))
+                     telephone-line-flycheck-segment))
           (accent . (telephone-line-major-mode-segment))
           (evil   . (telephone-line-airline-position-segment))))
   ;; Set height
@@ -1512,7 +1512,7 @@ Enabling icons in Corfu:
       (consult-outline)))
   :bind (("C-s" . consult-line)
          ("C-c o" . dn/consult-outline)
-         ("C-c e" . consult-flymake)
+         ("C-c e" . consult-flycheck)
          ("C-c r" . consult-ripgrep)
          ("C-c TAB" . consult-buffer)
          :map minibuffer-local-map
@@ -2633,14 +2633,15 @@ If PROJECT is not specified, assume current project root."
         ("f" . eglot-format-buffer)
         ("R" . eglot-rename))
   :hook
-  ((python-base-mode-hook dockerfile-ts-mode-hook) . eglot-ensure)
+  (dockerfile-ts-mode-hook . eglot-ensure)
+  ;; ((python-base-mode-hook dockerfile-ts-mode-hook) . eglot-ensure)
   :init
   ;; Always refresh completion table from LSP
   ;; Note: this is a test, might be slow depending on the LSP server
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-noninterruptible)
   (define-prefix-command 'dn/prog-map)
-  (keymap-global-set "C-c l" '("prog" . dn/prog-map))
+  ;; (keymap-global-set "C-c l" '("prog" . dn/prog-map))
   ;; (setq-default eglot-workspace-configuration
   ;;               '(:pylsp
   ;;                 (:plugins
@@ -2653,7 +2654,7 @@ If PROJECT is not specified, assume current project root."
   ;; (with-eval-after-load "eglot"
   ;;   (add-to-list 'eglot-stay-out-of 'flymake))
   )
-(use-package jsonrpc)
+;; (use-package jsonrpc)
 #+end_src
 
 *** consult-eglot
@@ -2679,6 +2680,28 @@ See also:
   :config
   (eglot-booster-mode))
 #+end_src
+*** lsp-copilot
+#+begin_src emacs-lisp
+(use-package lsp-copilot
+  :ensure (lsp-copilot :type git :host github :repo "jadestrong/lsp-copilot" :files (:defaults "lsp-copilot") :pre-build (("cargo" "build" "--release") ("cp" "./target/release/lsp-copilot" "./")))
+  :hook
+  ((python-base-mode-hook) . lsp-copilot-mode)
+  :bind
+  (:map lsp-copilot-mode-map
+   ("M-," . nil)
+   ("C-," . lsp-copilot-signature-activate)
+   :map dn/lsp-copilot-map
+   ("d" . lsp-copilot-find-definition)
+   ("r" . lsp-copilot-find-references)
+   ("c" . lsp-copilot-execute-code-action)
+   ("f" . lsp-copilot-format-buffer)
+   ("R" . lsp-copilot-rename))
+  :init
+  (define-prefix-command 'dn/lsp-copilot-map)
+  (keymap-global-set "C-c l" '("lsp-copilot" . dn/lsp-copilot-map))
+  :config
+  (setopt lsp-copilot-diagnostics-provider :none))
+#+end_src
 ** Flymake
 
 #+begin_src emacs-lisp
@@ -2686,6 +2709,19 @@ See also:
   :ensure nil
   :init
   (setq flymake-margin-indicators-string '((error "E" compilation-error) (warning "W" compilation-warning) (note "N" compilation-info))))
+#+end_src
+** Flycheck
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :hook
+  (python-base-mode-hook . (lambda () (flycheck-add-next-checker 'python-ruff 'python-mypy)))
+  :config
+  (setopt flycheck-python-ruff-config '("ruff.toml" ".ruff.toml" "pyproject.toml")))
+
+(use-package consult-flycheck
+  :after consult
+  :bind (("C-c e" . consult-flycheck)))
 #+end_src
 ** Tree-sitter
 
@@ -2844,7 +2880,7 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
     (smerge-mode)
     ;; (flymake-ruff-load)
     (setq-local eglot-stay-out-of '("flymake"))
-    (flymake-mode))
+    (flycheck-mode))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)
   (python-base-mode-hook . dn/python-hook)
@@ -2979,7 +3015,11 @@ Alternatives include [[https://github.com/jorgenschaefer/pyvenv][pyvenv.el]], [[
       (setq-local python-shell-interpreter-args "-i")
       (when-let ((black-executable (pet-executable-find "black")))
         (setq-local blacken-executable black-executable))
+      (when-let ((mypy-executable (pet-executable-find "mypy")))
+        (setq-local flycheck-python-mypy-python-executable (pet-executable-find "python"))
+        (setq-local flycheck-python-mypy-executable mypy-executable))
       (when-let ((ruff-executable (pet-executable-find "ruff")))
+        (setq-local flycheck-python-ruff-executable ruff-executable)
         (setq-local ruff-format-command ruff-executable)))))
 #+end_src
 
@@ -3091,19 +3131,19 @@ Blacken is now disabled by default in favour of =ruff-format=. If it needs to be
 Currently testing mypy as a flymake backend instead of via an LSP (as I am also testing basedpyright over python-lsp-server).
 
 #+begin_src emacs-lisp
-(use-package flymake-mypy
-  :ensure (flymake-mypy
-             :type git
-             :host github
-             :repo "com4/flymake-mypy")
-  :hook (python-base-mode-hook . flymake-mypy-enable)
-  :config
-  (defun my/flymake-eglot-fix ()
-    "Add flymake checkers after Eglot replaces the checkers."
-    (when (derived-mode-p 'python-base-mode)
-      ;; re-enable the default python.el checker
-      (add-hook 'flymake-diagnostic-functions 'python-flymake nil t)
-      (flymake-mypy-enable))))
+;; (use-package flymake-mypy
+;;   :ensure (flymake-mypy
+;;              :type git
+;;              :host github
+;;              :repo "com4/flymake-mypy")
+;;   :hook (python-base-mode-hook . flymake-mypy-enable)
+;;   :config
+;;   (defun my/flymake-eglot-fix ()
+;;     "Add flymake checkers after Eglot replaces the checkers."
+;;     (when (derived-mode-p 'python-base-mode)
+;;       ;; re-enable the default python.el checker
+;;       (add-hook 'flymake-diagnostic-functions 'python-flymake nil t)
+;;       (flymake-mypy-enable))))
 
 ;; (add-hook 'eglot-managed-mode-hook 'my/flymake-eglot-fix))
 #+end_src

@@ -422,6 +422,7 @@ Add folder with custom libraries to load-path. Currently only used for =mail-con
   :config
   (ultra-scroll-mode 1))
 #+end_src
+
 * OS specific settings
 
 ** Define booleans for OS
@@ -1005,7 +1006,6 @@ brew install coreutils
 (use-package meow-tree-sitter
   :config
   (meow-tree-sitter-register-defaults))
-
 #+end_src
 ** Meow vterm
 
@@ -1156,75 +1156,6 @@ Font settings for daemon mode:
 #+end_src
 
 ** Modeline
-
-*** Doom modeline
-
-Currently using mood-line as a test.
-
-This package depends on all-the-icons package. When installing Doom modeline for the first time, please run 'all-the-icons-install-fonts' via M-x first.
-
-#+begin_src emacs-lisp
-;; (use-package doom-modeline
-;;   :straight t
-;;   :config
-;;   (setq doom-modeline-fn-alist (remove '(battery . doom-modeline-segment--battery) doom-modeline-fn-alist))
-;;   (doom-modeline-mode 1)
-;;   ;; (display-time)
-;;   ;; (display-battery-mode)
-;;   :custom
-;;   (display-time-24hr-format t)
-;;   (display-time-day-and-date t))
-#+end_src
-
-Ensure icons are used in Daemon mode:
-
-#+begin_src emacs-lisp
-;; (add-hook 'server-after-make-frame-hook
-;;  (lambda ()
-;;      (setq doom-modeline-icon (display-graphic-p))))
-#+end_src
-
-NOTE: ~(doom-modeline-mode)~ results in ~(error "bar is not a defined segment")~ in emacs@29. See also: https://githubhot.com/repo/seagle0128/doom-modeline/issues/505
-
-To fix, run this code *once*:
-
-#+begin_src emacs-lisp
-;; (setq doom-modeline-fn-alist
-;;       (--map
-;;        (cons (remove-pos-from-symbol (car it)) (cdr it))
-;;        doom-modeline-fn-alist))
-#+end_src
-
-*** Mood-line
-
-Currently trying =mood-line= over =doom-modeline= as the latter messes up the battery string in the top right corner.
-
-#+begin_src emacs-lisp
-;; (use-package mood-line
-;;   :init
-;;   ;; (setq battery-mode-line-format (concat " " (dn/battery-icon) "%b%p% "))
-;;   (setq mode-line-misc-info (remove '(global-mode-string ("" global-mode-string)) mode-line-misc-info))
-;;   :custom
-;;   (display-time-24hr-format t)
-;;   (display-time-day-and-date t)
-;;   (display-time-default-load-average nil)
-;;   :config
-;;   (mood-line-mode)
-;;   (setq mood-line-glyph-alist mood-line-glyphs-fira-code)
-;;   (display-time-mode)
-;;   (display-battery-mode))
-
-;; (use-package mood-line-segment-modal
-;;   :ensure nil
-;;   :after mood-line
-;;   :config
-;;   (setq mood-line-segment-modal-meow-state-alist '((normal "NORMAL" . font-lock-variable-name-face)
-;;                                                    (insert "INSERT" . font-lock-string-face)
-;;                                                    (keypad "KEYWORD" . font-lock-keyword-face)
-;;                                                    (beacon "BEACON" . font-lock-type-face)
-;;                                                    (motion "MOTION" . font-lock-constant-face)
-;;                                                    (select "SELECT" . font-lock-constant-face))))
-#+end_src
 
 *** Telephone-line
 

@@ -1776,7 +1776,8 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
    ("C-c s p" . jinx-previous)
    ("C-c s l" . jinx-languages))
   :hook
-  (text-mode-hook . jinx-mode)
+  (org-mode-hook . jinx-mode)
+  (markdown-mode-hook . jinx-mode)
   :config
   (setq jinx-languages "en_GB"))
 #+end_src

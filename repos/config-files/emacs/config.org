@@ -1087,7 +1087,7 @@ Font settings for daemon mode:
 (use-package modus-themes
   :init
   (setq modus-themes-custom-auto-reload nil
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi)
         modus-themes-mixed-fonts t
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
@@ -1128,7 +1128,7 @@ Font settings for daemon mode:
           (bg-heading-3 unspecified)
           (bg-heading-4 unspecified)
           (bg-heading-5 unspecified)))
-  (load-theme 'modus-vivendi-tinted t)
+  (load-theme 'modus-vivendi t)
   (defun dn/set-fill-column-indicator-faces ()
       "Set colour of fill-column-indicator based on modus theme."
     (modus-themes-with-colors

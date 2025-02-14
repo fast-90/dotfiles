@@ -3634,7 +3634,7 @@ Makes the AI forget the past conversations of current buffer."
     (interactive)
     (setq-local gptel--ollama-context nil))
   :config
-  (setq-default gptel-model "gpt-4o-mini")
+  ;; (setq-default gptel-model 'gpt-4o-mini)
   (gptel-make-ollama
       "Ollama"
     :host "localhost:11434"
@@ -3648,6 +3648,14 @@ Makes the AI forget the past conversations of current buffer."
   ;;                :stream t))
   ;; (setq-default gptel-model "nous-hermes2:10.7b")
   ;; (setq-default gptel-temperature nil)
+  (setq gptel-model 'deepseek-chat
+        gptel-backend
+        (gptel-make-openai "DeepSeek"
+          :host "api.deepseek.com"
+          :endpoint "/chat/completions"
+          :stream t
+          :key (auth-source-pick-first-password :host "api.deepseek.com")
+          :models '(deepseek-chat deepseek-reasoner)))
   (setq gptel-directives '((default . "You are a large language model living in Emacs and a helpful assistant. Respond concisely.")
                            (programming . "You are a professional programmer and an expert in Python, SQL and Rust. Provide only code, no explanations.")
                            (writing . "You are a large language model and a writing assistant. Respond concisely.")
@@ -3661,6 +3669,30 @@ Makes the AI forget the past conversations of current buffer."
                                       (org-mode . "*Response:*\n\n")
                                       (text-mode . "**Response:** "))))
 #+end_src
+
+* Elysium
+
+#+begin_src emacs-lisp
+(use-package elysium
+  :custom
+  ;; Below are the default values
+  (elysium-window-size 0.33) ; The elysium buffer will be 1/3 your screen
+  (elysium-window-style 'vertical))
+#+end_src
+
+* Aider
+
+#+begin_src emacs-lisp
+(use-package aidermacs
+  :ensure (:host github :repo "MatthewZMD/aidermacs" :files ("*.el"))
+  :config
+  (setq aidermacs-args '("--model" "deepseek"))
+  (setenv "OPENAI_API_KEY" (auth-source-pick-first-password :host "api.openai.com"))
+  (setenv "DEEPSEEK_API_KEY" (auth-source-pick-first-password :host "api.deepseek.com"))
+  (setq aidermacs-backend 'vterm)
+  (global-set-key (kbd "C-c A") 'aidermacs-transient-menu))
+#+end_src
+
 * LaTeX
 
 Although not necessarily Emacs configuration, LaTeX needs to be installed in the OS in order to render LaTeX properly in org-mode:

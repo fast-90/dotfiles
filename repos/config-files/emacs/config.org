@@ -1939,15 +1939,6 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
         ))
 #+end_src
 
-** Org bullet
-
-#+begin_src emacs-lisp
-  ;; (use-package org-bullets
-  ;;   :straight t)
-
-  ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+end_src
-
 ** Org appear
 
 Org-appear shows the emphasis markers when your cursor is on the text, even if ~org-hide-emphasis-markers~ is set.
@@ -2007,15 +1998,6 @@ Related github issues:
               :map org-roam-dailies-map
               ("Y" . org-roam-dailies-capture-yesterday)
               ("T" . org-roam-dailies-capture-tomorrow))
-  ;; :general
-  ;; (leader-keys
-  ;;   "n"   '(:ignore t              :wk "Roam")
-  ;;   "n l" '(org-roam-buffer-toggle :wk "Buffer toggle")
-  ;;   "n f" '(org-roam-node-find     :wk "Find")
-  ;;   "n i" '(org-roam-node-insert   :wk "Insert")
-  ;;   "n t" '(org-roam-tag-add       :wk "Add tag")
-  ;;   "n T" '(org-roam-tag-remove    :wk "Remove tag")
-  ;;   "n d" '(org-roam-dailies-map   :wk "Dailies"))
   :config
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (setq org-roam-node-display-template #("${title:*} ${tags:40}" 11 21
@@ -2489,19 +2471,6 @@ Function to archive all done task in current org agenda/file.
      (setq org-map-continue-from (org-element-property :begin (org-element-at-point))))
    "/DONE" 'file))
 #+end_src
-
-* Reading
-
-** org-noter
-
-#+begin_src emacs-lisp
-;; (use-package org-noter
-;;   :init
-;;   (setq org-noter-doc-split-fraction '(0.6 . 0.4))
-;;   (setq org-noter-always-create-frame nil)
-;;   (setq org-noter-kill-frame-at-session-end nil))
-#+end_src
-
 
 * Writing
 

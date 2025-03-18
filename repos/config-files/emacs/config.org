@@ -141,6 +141,9 @@ Useful links for troubleshooting:
 ;; cursor color is concerned).
 (advice-add #'x-apply-session-resources :override #'ignore)
 
+(setq load-prefer-newer t)
+(setq native-comp-jit-compilation t)
+
 (setq native-comp-async-report-warnings-errors nil) 	; Stop showing compilation warnings on startup
 
 (provide 'early-init)

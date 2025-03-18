@@ -2946,7 +2946,9 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
     "n" #'combobulate-navigate-next
     "p" #'combobulate-navigate-previous
     "a" #'combobulate-navigate-beginning-of-defun
-    "e" #'combobulate-navigate-end-of-defun))
+    "e" #'combobulate-navigate-end-of-defun)
+  :config
+  (define-key python-ts-mode-map [remap meow-block] 'combobulate-mark-node-dwim))
 #+end_src
 
 ** Templates with TempEL

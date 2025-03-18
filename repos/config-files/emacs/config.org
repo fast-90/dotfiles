@@ -1518,6 +1518,16 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
   (marginalia-mode))
 #+end_src
 
+** Nerd icons in completion
+
+#+begin_src emacs-lisp
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+#+end_src
+
 ** Which-key
 
 #+begin_src emacs-lisp
@@ -1555,12 +1565,18 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 Enabling icons in Corfu:
 
 #+begin_src emacs-lisp
-(use-package kind-icon
-  :after corfu
-  :custom
-  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+(use-package nerd-icons-corfu
   :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+#+end_src
+#+begin_src emacs-lisp
+;; (use-package kind-icon
+;;   :after corfu
+;;   :custom
+;;   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+;;   :config
+;;   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
 ** Consult

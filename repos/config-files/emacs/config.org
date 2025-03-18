@@ -1790,6 +1790,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 	  ;; "\\*pytest\\*"
           "\\*ChatGPT*\\*.*$"
           "\\*DeepSeek*\\*.*$"
+          "\\*lsp.*help\\*$"
           compilation-mode))
 
   (setq popper-group-function #'popper-group-by-project) 
@@ -2785,11 +2786,12 @@ See also:
 (use-package lsp-copilot
   :ensure (lsp-copilot :type git :host github :repo "jadestrong/lsp-copilot" :files (:defaults "lsp-copilot") :pre-build (("cargo" "build" "--release") ("cp" "./target/release/lsp-copilot" "./")))
   :hook
-  ((python-base-mode-hook) . lsp-copilot-mode)
+  ((python-base-mode-hook yaml-mode-hook) . lsp-copilot-mode)
   :bind
   (:map lsp-copilot-mode-map
    ("M-," . nil)
    ("C-," . lsp-copilot-signature-activate)
+   ("C-." . lsp-copilot-describe-thing-at-point)
    :map dn/lsp-copilot-map
    ("d" . lsp-copilot-find-definition)
    ("r" . lsp-copilot-find-references)
@@ -2799,8 +2801,16 @@ See also:
   :init
   (define-prefix-command 'dn/lsp-copilot-map)
   (keymap-global-set "C-c l" '("lsp-copilot" . dn/lsp-copilot-map))
+  (dolist (buffer-name-regex '("\\*lsp.*help\\*$"))
+    (add-to-list 'display-buffer-alist
+                 `(,buffer-name-regex
+                   (display-buffer-reuse-window display-buffer-at-bottom)
+                   (display-buffer-reuse-window display-buffer-in-direction)
+                   (dedicated . t) ;dedicated is supported in emacs27
+                   (reusable-frames . visible)
+                   (window-height . 0.2)) nil))
   :config
-  (setopt lsp-copilot-diagnostics-provider :none))
+  (setopt lsp-copilot-diagnostics-provider :auto))
 #+end_src
 ** Flymake
 

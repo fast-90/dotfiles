@@ -1438,6 +1438,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
               ("C-k" . vertico-previous)
               ("C-f" . vertico-exit)
               :map minibuffer-local-map
+              ("<tab>" . vertico-insert)
               ("M-h" . backward-kill-word))
   :custom
   (vertico-cycle t)

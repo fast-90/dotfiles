@@ -3196,7 +3196,7 @@ I use =pyvenv= to in combination with =pet= to quickly switch to the correct env
       (pyvenv-activate venv)
       (message (concat "Activated environment in " venv))))
   :config
-  (setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name (" " pyvenv-virtual-env-name " "))))
+  (setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name (" " pyvenv-virtual-env-name " "))))
 #+end_src
 
 *** Pytest

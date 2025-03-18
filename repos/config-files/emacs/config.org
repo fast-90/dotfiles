@@ -705,6 +705,7 @@ brew install coreutils
     (interactive)
     (nt--call-negative 'meow-till))
   :config
+  (add-to-list 'meow-mode-state-list '(pgmacs-mode . motion))
   (defun define-meow-select-mode ()
     "Define meow-select-mode to select and copy text in motion state."
     (setq meow-selection-keymap (make-keymap))

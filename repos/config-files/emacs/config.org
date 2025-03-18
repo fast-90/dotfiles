@@ -2826,7 +2826,31 @@ See also:
 (use-package flycheck
   :hook
   (python-base-mode-hook . (lambda () (flycheck-add-next-checker 'python-ruff 'python-mypy)))
+  :init
+  (defun flycheck-parse-sqlfluff (output checker buffer)
+    "Parse SQLFluff JSON OUTPUT from CHECKER on BUFFER."
+    (mapcar (lambda (issue)
+              (let-alist issue
+                (flycheck-error-new
+                 :line .start_line_no
+                 :column .start_line_pos
+                 :end-line .end_line_no
+                 :end-column .end_line_pos
+                 :level (if .warning 'warning 'error)
+                 :message .description
+                 :checker checker
+                 :buffer buffer
+                 :filename (buffer-file-name buffer))))
+            ;; Assume that violations are in the first entry (and only one file is reported at a time)
+            (cdr (assoc 'violations (elt (car (flycheck-parse-json output)) 0)))))
+  (flycheck-define-checker sql-sqlfluff
+    "A SQL linter using sqlfluff."
+    :command ("sqlfluff" "lint" "--format=json" "-")
+    :standard-input t
+    :error-parser flycheck-parse-sqlfluff
+    :modes (sql-mode))
   :config
+  (add-to-list 'flycheck-checkers 'sql-sqlfluff)
   (setopt flycheck-python-ruff-config '("ruff.toml" ".ruff.toml" "pyproject.toml")))
 
 (use-package consult-flycheck

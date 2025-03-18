@@ -1623,6 +1623,18 @@ Enabling icons in Corfu:
   (add-to-list 'consult-buffer-sources 'dired-source 'append))
 #+end_src
 
+
+** Consult-gh
+
+#+begin_src emacs-lisp
+(use-package consult-gh
+  ;; :ensure (:tag "v2.2")
+  :after consult
+  :config
+  (setopt consult-gh-issue-action #'consult-gh--issue-view-action)
+  (setopt consult-gh-pr-action #'consult-gh--pr-view-action))
+#+end_src
+
 ** Embark
 
 #+begin_src emacs-lisp

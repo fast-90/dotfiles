@@ -3660,7 +3660,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   (setopt highlight-indent-guides-auto-enabled nil)
   (setopt highlight-indent-guides-auto-odd-face-perc 97)
   (setopt highlight-indent-guides-auto-even-face-perc 10)
-  (modus-themes-with-colors
+  (ef-themes-with-colors
     (set-face-background 'highlight-indent-guides-odd-face bg-inactive)
     (set-face-background 'highlight-indent-guides-even-face bg-active)))
 #+end_src

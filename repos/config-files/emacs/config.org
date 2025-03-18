@@ -3379,6 +3379,28 @@ import pandas
 
 - The above workflow can be replicated with any tool that allows the creation of environments (e.g. conda/pyenv/poetry).
 
+** SQL
+#+begin_src emacs-lisp
+(use-package pgmacs
+  :ensure (pgmacs :host github :repo "emarsden/pgmacs"))
+
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package sqlformat
+  :hook
+  (sql-mode-hook . sqlformat-on-save-mode)
+  (sql-mode-hook . sqlfluff-fix-on-save-mode)
+  :init
+  (reformatter-define sqlfluff-fix
+  :program "sqlfluff"
+  :args (append '("fix") sqlformat-args '("-"))
+  :lighter " RuffFix"
+  :group 'sqlformat)
+  :config
+  (setopt sqlformat-command 'sqlfluff))
+#+end_src
+
 ** Docker
 *Prerequisites:*
 + Install Dockerfile treesit grammar (~treesit-install-language-grammar RET dockerfile~)

@@ -3033,7 +3033,8 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
     (smerge-mode)
     ;; (flymake-ruff-load)
     (setq-local eglot-stay-out-of '("flymake"))
-    (flycheck-mode))
+    (flycheck-mode)
+    (setq-local flycheck-checker 'python-ruff))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)
   (python-base-mode-hook . dn/python-hook)

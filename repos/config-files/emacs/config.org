@@ -1595,9 +1595,9 @@ Enabling icons in Corfu:
   (defun dn/consult-outline ()
     "Use consult-org-heading if in org-mode, otherwise use consult-outline."
     (interactive)
-    (if (equal major-mode 'org-mode)
-        (consult-org-heading)
-      (consult-outline)))
+    (cond ((equal major-mode 'org-mode) (consult-org-heading))
+          ((derived-mode-p 'prog-mode) (consult-imenu))
+          (t (consult-outline))))
   :bind (("C-s" . consult-line)
          ("C-c o" . dn/consult-outline)
          ("C-c e" . consult-flycheck)

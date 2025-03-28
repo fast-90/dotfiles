@@ -3040,6 +3040,7 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
     (set (make-local-variable 'compile-command)
          (concat "pytest " (buffer-name)))
     (auto-revert-mode)
+    (electric-pair-local-mode)
     (display-fill-column-indicator-mode)
     (setq-local python-flymake-command `("ruff" "check" "--output-format" "concise" "--exit-zero" "--config" ,(find-ruff-config-files-in-current-project) "--quiet" "--stdin-filename" "stdin" "-"))
     (smerge-mode)

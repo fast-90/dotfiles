@@ -125,8 +125,8 @@ Useful links for troubleshooting:
        (add-to-list 'default-frame-alist '(drag-internal-border . 1))
        (add-to-list 'default-frame-alist '(internal-border-width . 5)))
       (dn/is-macos
-       (add-to-list 'default-frame-alist '(undecorated-round . t))
-       ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+       ;; (add-to-list 'default-frame-alist '(undecorated-round . t))
+       (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
        (add-to-list 'default-frame-alist '(ns-appearance . dark))
        (setq ns-use-proxy-icon nil)
        (setq frame-title-format nil)))

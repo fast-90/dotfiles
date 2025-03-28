@@ -1601,7 +1601,6 @@ Enabling icons in Corfu:
           (t (consult-outline))))
   :bind (("C-s" . consult-line)
          ("C-c o" . dn/consult-outline)
-         ("C-c e" . consult-flycheck)
          ("C-c r" . consult-ripgrep)
          ("C-c TAB" . consult-buffer)
          :map minibuffer-local-map
@@ -2827,9 +2826,19 @@ See also:
 
 #+begin_src emacs-lisp
 (use-package flycheck
+  :bind
+  ("C-c e n" . 'flycheck-next-error)
+  ("C-c e p" . 'flycheck-previous-error)
+  ("C-c e w" . 'flycheck-next-error)
   :hook
   (python-base-mode-hook . (lambda () (flycheck-add-next-checker 'python-ruff 'python-mypy)))
+  (sql-mode-hook . flycheck-mode)
   :init
+  (defvar-keymap dn/flycheck-repeat-map
+    :repeat t
+    "n" #'flycheck-next-error
+    "p" #'flycheck-previous-error
+    "w" #'flycheck-copy-errors-as-kill)
   (defun flycheck-parse-sqlfluff (output checker buffer)
     "Parse SQLFluff JSON OUTPUT from CHECKER on BUFFER."
     (mapcar (lambda (issue)
@@ -2858,7 +2867,7 @@ See also:
 
 (use-package consult-flycheck
   :after consult
-  :bind (("C-c e" . consult-flycheck)))
+  :bind (("C-c e e" . consult-flycheck)))
 #+end_src
 ** Tree-sitter
 

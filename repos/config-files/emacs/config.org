@@ -2783,26 +2783,26 @@ See also:
   :config
   (eglot-booster-mode))
 #+end_src
-*** lsp-copilot
+*** lsp-proxy
 #+begin_src emacs-lisp
-(use-package lsp-copilot
-  :ensure (lsp-copilot :type git :host github :repo "jadestrong/lsp-copilot" :files (:defaults "lsp-copilot") :pre-build (("cargo" "build" "--release") ("cp" "./target/release/lsp-copilot" "./")))
+(use-package lsp-proxy
+  :ensure (lsp-proxy :type git :host github :repo "jadestrong/lsp-proxy" :files (:defaults "lsp-proxy") :pre-build (("cargo" "build" "--release") ("cp" "./target/release/lsp-proxy" "./")))
   :hook
-  ((python-base-mode-hook yaml-mode-hook) . lsp-copilot-mode)
+  ((python-base-mode-hook yaml-mode-hook) . lsp-proxy-mode)
   :bind
-  (:map lsp-copilot-mode-map
+  (:map lsp-proxy-mode-map
    ("M-," . nil)
-   ("C-," . lsp-copilot-signature-activate)
-   ("C-." . lsp-copilot-describe-thing-at-point)
-   :map dn/lsp-copilot-map
-   ("d" . lsp-copilot-find-definition)
-   ("r" . lsp-copilot-find-references)
-   ("c" . lsp-copilot-execute-code-action)
-   ("f" . lsp-copilot-format-buffer)
-   ("R" . lsp-copilot-rename))
+   ("C-," . lsp-proxy-signature-activate)
+   ("C-." . lsp-proxy-describe-thing-at-point)
+   :map dn/lsp-proxy-map
+   ("d" . lsp-proxy-find-definition)
+   ("r" . lsp-proxy-find-references)
+   ("c" . lsp-proxy-execute-code-action)
+   ("f" . lsp-proxy-format-buffer)
+   ("R" . lsp-proxy-rename))
   :init
-  (define-prefix-command 'dn/lsp-copilot-map)
-  (keymap-global-set "C-c l" '("lsp-copilot" . dn/lsp-copilot-map))
+  (define-prefix-command 'dn/lsp-proxy-map)
+  (keymap-global-set "C-c l" '("lsp-proxy" . dn/lsp-proxy-map))
   (dolist (buffer-name-regex '("\\*lsp.*help\\*$"))
     (add-to-list 'display-buffer-alist
                  `(,buffer-name-regex
@@ -2812,7 +2812,7 @@ See also:
                    (reusable-frames . visible)
                    (window-height . 0.2)) nil))
   :config
-  (setopt lsp-copilot-diagnostics-provider :auto))
+  (setopt lsp-proxy-diagnostics-provider :auto))
 #+end_src
 ** Flymake
 

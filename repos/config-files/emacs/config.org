@@ -3444,10 +3444,10 @@ Docker interface a la Magit (replacement for desktop app):
 
 #+begin_src emacs-lisp
 (use-package docker
+  :bind
+  ("C-c D" . docker)
   :config
-  (setopt docker-command "docker")
-  (when (elpaca-installed-p 'vterm)
-        (setq docker-run-async-with-buffer-function #'docker-run-async-with-buffer-vterm)))
+  (setopt docker-command "docker"))
 #+end_src
 ** Rust
 

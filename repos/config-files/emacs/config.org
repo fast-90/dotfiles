@@ -1104,12 +1104,13 @@ Font settings for daemon mode:
 (add-hook 'server-after-make-frame-hook 'dn/setup-font-faces-daemon)
 #+end_src
 
-** all-the-icons
+** Icons
 
 #+begin_src emacs-lisp
 (set-face-attribute 'tab-bar nil :font (font-spec :family dn/default-font :size dn/default-font-size))
 
 (use-package all-the-icons)
+(use-package nerd-icons)
 
 (elpaca-wait)
 #+end_src
@@ -1887,11 +1888,13 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 
 #+begin_src emacs-lisp
 (use-package magit
-  :after (with-editor transient)
+  :after (with-editor llama transient nerd-icons)
   :config
+  (setopt magit-format-file-function #'magit-format-file-nerd-icons)
   (setopt magit-process-popup-time 5))
 
 (use-package with-editor)
+(use-package llama)
 
 (use-package transient
   :after seq)

@@ -100,6 +100,7 @@ outer.right      = 10
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 ctrl-shift-alt-b = 'layout tiles horizontal vertical'
 ctrl-shift-alt-s = 'layout accordion horizontal vertical'
+ctrl-shift-alt-semicolon = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
 ctrl-shift-alt-m = 'focus left'
@@ -256,7 +257,7 @@ if.app-id = 'ru.keepcoder.Telegram'
 run = 'move-node-to-workspace F'
 
 [[on-window-detected]]
-if.app-id = 'com.google.Chrome.app.cifhbcnohmdccbgoicgdjpfamggdegmo'
+if.app-id = 'org.chromium.Chromium.app.cifhbcnohmdccbgoicgdjpfamggdegmo' # Teams
 run = 'move-node-to-workspace F'
 
 [[on-window-detected]]
@@ -267,4 +268,9 @@ run = 'move-node-to-workspace R'
 if.app-id = 'com.hnc.Discord'
 run = 'move-node-to-workspace F'
 
-
+[[on-window-detected]]
+if.app-id="com.mitchellh.ghostty"
+run= [
+  "layout floating",
+  "move-node-to-workspace G"
+]

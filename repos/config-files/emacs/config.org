@@ -3233,6 +3233,7 @@ I use =pyvenv= to in combination with =pet= to quickly switch to the correct env
 (use-package pyvenv
   :hook
   (magit-status-mode-hook . pyvenv-deactivate)
+  (magit-post-refresh-hook . pyvenv-deactivate)
   :init
   (pyvenv-mode t)
   (pyvenv-tracking-mode t)

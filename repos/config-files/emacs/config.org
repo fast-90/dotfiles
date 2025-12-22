@@ -3856,6 +3856,7 @@ Makes the AI forget the past conversations of current buffer."
   ;;                :stream t))
   ;; (setq-default gptel-model "nous-hermes2:10.7b")
   ;; (setq-default gptel-temperature nil)
+  (gptel-make-gh-copilot "Copilot")
   (setq gptel-model 'deepseek-chat
         gptel-backend
         (gptel-make-openai "DeepSeek"
@@ -3876,6 +3877,45 @@ Makes the AI forget the past conversations of current buffer."
   (setq gptel-response-prefix-alist '((markdown-mode . "**Response:**\n\n")
                                       (org-mode . "*Response:*\n\n")
                                       (text-mode . "**Response:** "))))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package mcp
+  :config
+  (require 'mcp-hub)
+  (setq mcp-hub-servers
+        '(("aws-core" . (
+                         :command "uvx"
+                                  :args ("awslabs.core-mcp-server@latest")
+                                  :env (
+                                        :aws-foundations "true"
+                                                         :ci-cd-devops "true"
+                                                         :container-orchestration "true"
+                                                         :serverless-architecture "true"
+                                                         )))
+          ("aws-cloudwatch" . (
+                         :command "uvx"
+                                  :args ("awslabs.cloudwatch-mcp-server@latest")
+                                  :env (
+                                        :AWS_PROFILE "projectpuzzler-prd"
+                                                     :AWS_REGION "eu-central-1"
+                                                         )))
+          ("aws-cdk" :command "uvx" :args ("awslabs.cdk-mcp-server@latest"))
+          ("filesystem" :command "npx"
+           :args ("-y" "@modelcontextprotocol/server-filesystem" "/Users/xomnia/repos/alliander/ProjectPuzzler")
+           :timeout 300000
+           :env (
+                 :MCP_TIMEOUT 300000
+                                             :MCP_SERVER_REQUEST_TIMEOUT 300000
+                                             :MCP_CONNECTION_TIMEOUT 300000)))))
+#+end_src
+
+* ECA
+
+#+begin_src emacs-lisp
+(use-package eca
+  :config
+  (setopt eca-chat-custom-model "github-copilot/gpt-5-mini"))
 #+end_src
 
 * Elysium

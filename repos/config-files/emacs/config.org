@@ -897,9 +897,9 @@ Leave point after open-paren."
      ;; Use e to move up, n to move down.
      ;; Since special modes usually use n to move down, we only overwrite e here.
      '("e" . meow-prev)
-     '("n" . meow-next)
+     '("n" . nil)
      '("k" . nil)
-     '("j" . nil)
+     '("j" . "H-n")
      '("C-S-e" . "H-e")
      '("C-S-n" . "H-n")
      '("`" . meow-select-mode)
@@ -919,7 +919,7 @@ Leave point after open-paren."
      '("8" . meow-digit-argument)
      '("9" . meow-digit-argument)
      '("0" . meow-digit-argument)
-     '("b" . consult-buffer)
+     '("b" . ibuffer)
      '("t" . "C-c t")
      '("u" . "C-u")
      '("p" . "C-x p")
@@ -2864,7 +2864,7 @@ See also:
   :bind
   ("C-c e n" . 'flycheck-next-error)
   ("C-c e p" . 'flycheck-previous-error)
-  ("C-c e w" . 'flycheck-next-error)
+  ("C-c e w" . 'flycheck-copy-errors-as-kill)
   :hook
   (python-base-mode-hook . (lambda () (flycheck-add-next-checker 'python-ruff 'python-mypy)))
   (sql-mode-hook . flycheck-mode)

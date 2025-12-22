@@ -695,6 +695,31 @@ brew install coreutils
   (setq meow-use-clipboard t)
   (setq meow-use-dynamic-face-color t)
   (setq meow-use-cursor-position-hack t)
+  (defun insert-quotes (&optional arg)
+    "Enclose following ARG sexps in quotes.
+Leave point after open-quote."
+    (interactive "*P")
+    (insert-pair arg ?\" ?\"))
+  (defun insert-square-brackets (&optional arg)
+    "Enclose following ARG sexps in square brackets.
+Leave point after open-quote."
+    (interactive "*P")
+    (insert-pair arg ?[ ?]))
+  (defun insert-curly-brackets (&optional arg)
+    "Enclose following ARG sexps in curly brackets.
+Leave point after open-quote."
+    (interactive "*P")
+    (insert-pair arg ?{ ?}))
+  (defun insert-backticks (&optional arg)
+    "Enclose following ARG sexps in backticks.
+Leave point after open-quote."
+    (interactive "*P")
+    (insert-pair arg ?` ?`))
+  (defun insert-quotations (&optional arg)
+    "Enclose following ARG sexps in quotation marks.
+Leave point after open-paren."
+    (interactive "*P")
+    (insert-pair arg ?\' ?\'))
   (defmacro nt--call-negative (form)
     `(let ((current-prefix-arg -1))
        (call-interactively ,form)))
@@ -704,6 +729,14 @@ brew install coreutils
   (defun nt-negative-till ()
     (interactive)
     (nt--call-negative 'meow-till))
+  (define-prefix-command 'dn/surround-map)
+  :bind
+  (:map dn/surround-map
+        ("\"" . insert-quotes)
+        ("'" . insert-quotations)
+        ("[" . insert-square-brackets)
+        ("{" . insert-curly-brackets)
+        ("`" . insert-backticks))
   :config
   (add-to-list 'meow-mode-state-list '(pgmacs-mode . motion))
   (defun define-meow-select-mode ()
@@ -908,8 +941,10 @@ brew install coreutils
      '("." . meow-bounds-of-thing)
      '("[" . meow-beginning-of-thing)
      '("]" . meow-end-of-thing)
-     '("(" . meow-page-up)
-     '(")" . meow-page-down)
+     '("(" . insert-parentheses)
+     '("\"" . insert-quotes)
+     ;; '("(" . meow-page-up)
+     '(")" . dn/surround-map)
      '("a" . meow-replace)
      '("A" . meow-swap-grab)
      '("b" . meow-block)

@@ -163,6 +163,7 @@ Elpaca is an elisp package manager which installs packages asynchronously. It's 
 Installing as per the instructions:
 
 #+begin_src emacs-lisp :tangle (expand-file-name "init.el" user-emacs-directory)
+;; -*- lexical-binding: t -*-
 (defvar elpaca-installer-version 0.9)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -356,10 +357,21 @@ I copied this over from [[https://github.com/Nathan-Furnal/dotemacs/blob/master/
 
 #+begin_src emacs-lisp
 (elpaca-wait)
+(unload-feature 'eldoc t)
+(unload-feature 'seq t)
+(setq custom-delayed-init-variables '())
+(defvar global-eldoc-mode nil)
+(elpaca eldoc
+    (require 'eldoc)
+    (global-eldoc-mode) ;; This is usually enabled by default by Emacs
+    (setopt eldoc-echo-area-use-multiline-p nil))
 
-(use-package eldoc
-  :custom
-  (eldoc-echo-area-use-multiline-p nil))
+(elpaca seq
+  (require 'seq))
+
+;; (use-package eldoc
+;;   :custom
+;;   (eldoc-echo-area-use-multiline-p nil))
 #+end_src
 
 ** Eldoc box
@@ -1211,27 +1223,30 @@ Font settings for daemon mode:
 #+end_src
 *** ef-themes
 #+begin_src emacs-lisp
+(use-package modus-themes)
+
 (use-package ef-themes
-  :hook (ef-themes-post-load-hook . dn/set-fill-column-indicator-faces)
+  :after modus-themes
+  :hook (modus-themes-post-load-hook . dn/set-fill-column-indicator-faces)
   :init
-  (setq ef-themes-to-toggle '(ef-owl ef-dark))
-  (setq ef-themes-headings ; read the manual's entry or the doc string
+  (setq modus-themes-to-toggle '(ef-owl ef-dark))
+  (setq modus-themes-headings ; read the manual's entry or the doc string
         '(
           (1 variable-pitch regular 1.4)
           (2 variable-pitch regular 1.3)
           (3 variable-pitch regular 1.2)
           (t variable-pitch regular 1.1)))
-  (setq ef-themes-common-palette-overrides
+  (setq modus-themes-common-palette-overrides
         '((bg-region bg-magenta-intense)
-          (fg-region fg-intense)))
+          (fringe unspecified)))
   ;; They are nil by default...
-  (setq ef-themes-mixed-fonts t)
+  (setq modus-themes-mixed-fonts t)
   ;; Disable all other themes to avoid awkward blending:
   (mapc #'disable-theme custom-enabled-themes)
-  (ef-themes-select 'ef-owl)
+  (modus-themes-load-theme 'modus-vivendi)
   (defun dn/set-fill-column-indicator-faces ()
     "Set colour of fill-column-indicator based on ef theme."
-    (ef-themes-with-colors
+    (modus-themes-with-colors
       (custom-set-faces
        `(fill-column-indicator ((,c :foreground ,bg-dim :background ,bg-dim :height 0.1))))))
   (dn/set-fill-column-indicator-faces))
@@ -1257,10 +1272,10 @@ Font settings for daemon mode:
 
 #+begin_src emacs-lisp
 (use-package telephone-line
-  :after ef-themes
+  :after (modus-themes meow)
   :hook
   (modus-themes-post-load-hook . dn/set-telephone-line-modus-faces)
-  (ef-themes-post-load-hook . dn/set-telephone-line-ef-themes-faces)
+  (modus-themes-post-load-hook . dn/set-telephone-line-modus-themes-faces)
   :init
   ;; Define custom buffer segment
   (defun dn/modified-status ()
@@ -1339,16 +1354,16 @@ Font settings for daemon mode:
       (set-face-attribute 'telephone-line-evil-normal nil :inherit 'telephone-line-evil :background bg-blue-intense :foreground fg-main)
       (set-face-attribute 'telephone-line-accent-active nil :inherit 'mode-line :background bg-dim :foreground fg-main)
       (set-face-attribute 'telephone-line-accent-inactive nil :foreground fg-dim :background bg-dim :inherit 'mode-line-inactive)))
-  (defun dn/set-telephone-line-ef-themes-faces ()
+  (defun dn/set-telephone-line-modus-themes-faces ()
     "Set faces for telephone line based on Modus theme."
     (interactive)
-    (ef-themes-with-colors
+    (modus-themes-with-colors
       (set-face-attribute 'telephone-line-evil-normal nil :inherit 'telephone-line-evil :background bg-completion :foreground fg-main)
       (set-face-attribute 'telephone-line-evil-insert nil :inherit 'telephone-line-evil :background bg-green-intense :foreground fg-main)
       (set-face-attribute 'telephone-line-evil-visual nil :inherit 'telephone-line-evil :background bg-red-intense :foreground fg-main)
       (set-face-attribute 'telephone-line-accent-active nil :inherit 'mode-line :background bg-dim :foreground fg-main)
       (set-face-attribute 'telephone-line-accent-inactive nil :foreground fg-dim :background bg-dim :inherit 'mode-line-inactive)))
-  (dn/set-telephone-line-ef-themes-faces))
+  (dn/set-telephone-line-modus-themes-faces))
 #+end_src
 
 * Tabs
@@ -1549,7 +1564,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
 #+begin_src emacs-lisp
 (use-package marginalia
   :defer 3
-  :custom (marginalia-annotators '(marginalia-annotators-light))
+  ;; :custom (marginalia-annotators '(marginalia-annotators-light))
   :config
   (marginalia-mode))
 #+end_src
@@ -1939,7 +1954,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 (use-package forge
   :after (closql magit))
 
-(use-package seq)
+;; (use-package seq)
 
 (use-package pr-review
   :bind
@@ -3709,7 +3724,7 @@ Can also be used in combination with emacs-jupyter. When the notebook is opened 
   (setopt highlight-indent-guides-auto-enabled nil)
   (setopt highlight-indent-guides-auto-odd-face-perc 97)
   (setopt highlight-indent-guides-auto-even-face-perc 10)
-  (ef-themes-with-colors
+  (modus-themes-with-colors
     (set-face-background 'highlight-indent-guides-odd-face bg-inactive)
     (set-face-background 'highlight-indent-guides-even-face bg-active)))
 #+end_src

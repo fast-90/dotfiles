@@ -4025,13 +4025,22 @@ Although not necessarily Emacs configuration, LaTeX needs to be installed in the
   :after meow
   :init
   (defvar use-colemak t)
+  (defun activate-colemak ()
+    "Activate Colemak bindings."
+    (interactive)
+    (setq use-colemak t)
+    (meow-setup-colemak)
+    (windmove-setup-colemak))
+  (defun deactivate-colemak ()
+    "Deactivate Colemak bindings and use Qwerty."
+    (interactive)
+    (setq use-colemak nil)
+    (meow-setup)
+    (windmove-setup))
   (defun toggle-colemak ()
     "Toggle between Colemak and Qwerty bindings."
     (interactive)
-    (setq use-colemak (not use-colemak))
     (if use-colemak
-        (progn (meow-setup-colemak)
-               (windmove-setup-colemak))
-      (progn (meow-setup)
-             (windmove-setup)))))
+        (deactivate-colemak)
+      (activate-colemak))))
 #+end_src

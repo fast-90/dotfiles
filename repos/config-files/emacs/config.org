@@ -588,13 +588,24 @@ Also hides other apps"
   :bind
   (:map dired-mode-map
         (")" . dired-omit-mode)
+        ("+" . dired-create-dir-or-file)
         ("," . (lambda () (interactive) (shell-command "open .")))
         :map dired-jump-map ("j" . nil))
   :custom
   (dired-listing-switches "-agho --group-directories-first")
   (dired-kill-when-opening-new-dired-buffer t)
   :init
-
+  (defun dired-create-dir-or-file (path)
+    "Use `dired-create-directory' or `dired-create-empty-file' based on PATH.
+   If PATH has an extension, create an empty file.
+   If it has no extension, create a directory.
+   If PATH already exists, report with a message and stop."
+    (interactive "FCreate (dir or file): ")
+    (if (file-exists-p path)
+        (message "Error: '%s' already exists." path)
+      (if (file-name-extension path)
+          (dired-create-empty-file path)
+        (dired-create-directory path))))
   (setq dired-omit-files "^[.#].+[^.\n]$")
   (setq dired-dwim-target t)
   (setq dired-auto-revert-buffer t)

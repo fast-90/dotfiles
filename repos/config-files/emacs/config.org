@@ -3946,7 +3946,39 @@ Makes the AI forget the past conversations of current buffer."
 #+begin_src emacs-lisp
 (use-package eca
   :config
-  (setopt eca-chat-custom-model "github-copilot/gpt-5-mini"))
+  (setopt eca-buttons-allow-mouse t)
+  :hook
+  (eca-chat-mode-hook . dn/eca-hook)
+  :init
+  (defun dn/eca-hook ()
+    "Hooks for ECA mode."
+    (setq-local corfu-preselect 'prompt)))
+#+end_src
+
+* agent-shell
+
+#+begin_src emacs-lisp
+(use-package agent-shell)
+#+end_src
+
+* opencode
+
+#+begin_src emacs-lisp
+(use-package plz)
+(use-package plz-media-type)
+(use-package plz-event-source)
+
+(use-package opencode
+  :ensure (opencode :type git :host codeberg :repo "sczi/opencode.el"))
+#+end_src
+
+* ninety-nine
+
+#+begin_src emacs-lisp
+(use-package ninety-nine
+  :ensure (ninety-nine :type git :host github :repo "choas/ninety-nine.el")
+  :config
+  (ninety-nine-setup '(:model "openai/gpt-5.2-codex")))
 #+end_src
 
 * Elysium

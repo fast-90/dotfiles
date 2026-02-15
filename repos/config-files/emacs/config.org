@@ -1249,6 +1249,9 @@ Font settings for daemon mode:
           (t variable-pitch regular 1.1)))
   (setq modus-themes-common-palette-overrides
         '((bg-region bg-magenta-intense)
+          (fg-heading-1 blue-warmer)
+          (fg-heading-2 yellow-cooler)
+          (fg-heading-3 cyan-cooler)
           (fringe unspecified)))
   ;; They are nil by default...
   (setq modus-themes-mixed-fonts t)

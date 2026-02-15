@@ -1614,7 +1614,7 @@ I also enabled directory tracking and named vterm buffer, see also here how to s
          ("C-k" . corfu-previous)
          ("TAB" . corfu-insert)
          ("C-d" . corfu-popupinfo-toggle)
-         ("RET" . nil)
+         ("RET" . corfu-insert)
          :map org-mode-map
          ("C-," . nil))
   :custom
@@ -2763,10 +2763,10 @@ Function to archive all done task in current org agenda/file.
                                   (dn/project-vterm "vterm" "v")
                                   (dn/project-just-exec-recipe "Execute Just recipe" "j")
                                   (dn/project-justl "List Just recipes" "J")))
-  (setq project-vc-extra-root-markers '("pyproject.toml"))
+  ;; (setq project-vc-extra-root-markers '("pyproject.toml"))
   (defun dn/project-root ()
   "Return the current project root."
-  (when-let (project (project-current))
+  (when-let* (project (project-current))
     (project-root project)))
   (defun dn/project-name (&optional project)
   "Return the name for PROJECT.
@@ -2989,10 +2989,14 @@ If you built Emacs from source, you should check whether tree-sitter is availabl
 #+begin_src emacs-lisp
 (use-package breadcrumb
   :config
+  (defun breadcrumb-ipath (index-alist pos)
+    "Get breadcrumb for position POS given INDEX-ALIST."
+    (if (get-text-property 0 'breadcrumb-region (caar index-alist))
+        (breadcrumb--ipath-rich index-alist pos)
+      (ignore-errors (breadcrumb--ipath-plain index-alist pos))))
   (setq breadcrumb-project-max-length 0.3)
   (setq breadcrumb-imenu-max-length 0.5)
   (breadcrumb-mode 1))
-  
 #+end_src
 
 ** Symbols outline
@@ -3058,10 +3062,6 @@ python-base-mode
 
 (ign "# type: ignore" q)
 (br "breakpoint()" q)
-
-markdown-mode
-
-(py "```{python}" n q n "```")
 #+end_src
 
 ** Python
@@ -3111,7 +3111,9 @@ Alternative regex string for simpler replacement: '__PYTHON_EL_eval(\".*?[\\]n\\
     ;; (flymake-ruff-load)
     (setq-local eglot-stay-out-of '("flymake"))
     (flycheck-mode)
-    (setq-local flycheck-checker 'python-ruff))
+    (setq-local flycheck-checker 'lsp-proxy)
+    (flycheck-add-next-checker 'lsp-proxy 'python-ruff)
+    (flycheck-disable-checker 'python-mypy))
   :hook
   (comint-preoutput-filter-functions . dn/python-comint-filter)
   (python-base-mode-hook . dn/python-hook)
@@ -3498,7 +3500,7 @@ Syntax highlighting:
     "Build image from current Dockerfile."
     (interactive "sImage name: ")
     (let ((build-directory (or docker-build-directory
-                               (if-let (project (project-current))
+                               (if-let* (project (project-current))
                                    (project-root project)
                                  default-directory))))
       (let ((default-directory build-directory))

@@ -864,7 +864,7 @@ Leave point after open-paren."
      '("y" . meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
-     '("'" . repeat)
+     '("'" . repeat-fu-execute)
      '("=" . meow-indent)
      '("<escape>" . ignore))
     (meow-define-keys 'select
@@ -1020,7 +1020,7 @@ Leave point after open-paren."
      '("z" . meow-pop-selection)
      '("Z" . meow-pop-grab)
      '("=" . meow-indent)
-     '("'" . repeat)
+     '("'" . repeat-fu-execute)
      '("/" . meow-search)
      '("_" . pop-global-mark)
      '("<escape>" . ignore))

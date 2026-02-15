@@ -1137,7 +1137,7 @@ Set fonts:
 
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil :font (font-spec :family dn/default-font :size dn/default-font-size :weight 'semi-bold))
-(set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size :weigth 'semi-bold))
+(set-face-attribute 'fixed-pitch nil :font (font-spec :family dn/default-font :size dn/default-font-size :weight 'semi-bold))
 (set-face-attribute 'variable-pitch nil :font (font-spec :family dn/variable-font :size dn/variable-font-size))
 #+end_src
 

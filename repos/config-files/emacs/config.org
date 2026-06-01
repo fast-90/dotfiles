@@ -2806,7 +2806,7 @@ Function to archive all done task in current org agenda/file.
                                   (dn/project-vterm "vterm" "v")
                                   (dn/project-just-exec-recipe "Execute Just recipe" "j")
                                   (dn/project-justl "List Just recipes" "J")))
-  ;; (setq project-vc-extra-root-markers '("pyproject.toml"))
+  (setq project-vc-extra-root-markers '("uv.lock"))
   (defun dn/project-root ()
   "Return the current project root."
   (when-let* (project (project-current))

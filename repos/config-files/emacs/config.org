@@ -828,8 +828,8 @@ Leave point after open-paren."
      '("D" . meow-backward-delete)
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
-     '("f" . meow-find)
-     '("F" . avy-goto-char-timer)
+     '("f" . flash-jump)
+     '("F" . meow-find)
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
      '("h" . meow-left)
@@ -978,7 +978,7 @@ Leave point after open-paren."
      '("D" . meow-backward-delete)
      '("e" . meow-prev)
      '("E" . meow-prev-expand)
-     '("f" . avy-goto-char-timer)
+     '("f" . flash-jump)
      '("F" . meow-find)
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
@@ -1011,7 +1011,7 @@ Leave point after open-paren."
      '("u" . meow-append)
      '("U" . meow-open-below)
      '("v" . meow-visit)
-     '("V" . avy-goto-char-timer)
+     '("V" . flash-treesitter)
      '("w" . undo-fu-only-redo)
      '("x" . meow-line)
      '("X" . avy-goto-line)
@@ -1019,6 +1019,7 @@ Leave point after open-paren."
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("Z" . meow-pop-grab)
+     '("^" . flash-treesitter)
      '("=" . meow-indent)
      '("'" . repeat-fu-execute)
      '("/" . meow-search)
@@ -1818,7 +1819,17 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
   :config
   (setq avy-all-windows 'all-frames))
 #+end_src
+** flash
 
+#+begin_src emacs-lisp
+(use-package flash
+  :commands (flash-jump flash-jump-continue
+             flash-treesitter)
+  ;; :bind ("s-j" . flash-jump)
+  :custom
+  (flash-multi-window t)
+  (define-key python-ts-mode-map [remap meow-block] 'flash-treesitter))
+#+end_src
 ** ace-link
 
 #+begin_src emacs-lisp

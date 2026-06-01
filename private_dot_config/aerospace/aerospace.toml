@@ -213,6 +213,8 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 ctrl-shift-alt-l = 'move-workspace-to-monitor prev'
 ctrl-shift-alt-u = 'move-workspace-to-monitor next'
+ctrl-shift-alt-leftSquareBracket = 'move-workspace-to-monitor prev'
+ctrl-shift-alt-rightSquareBracket= 'move-workspace-to-monitor next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'

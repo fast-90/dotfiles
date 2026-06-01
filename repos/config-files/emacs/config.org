@@ -1271,16 +1271,23 @@ Font settings for daemon mode:
 ~dimmer-mode~ dims the windows which are not active. Configuration includes option to exclude which-key and magit's transient menu from being dimmed.
 
 #+begin_src emacs-lisp
-(use-package dimmer
-  :config
-  (setq dimmer-fraction 0.3)
-  (setq dimmer-adjustment-mode :foreground)
-  (setq dimmer-use-colorspace :rgb)
-  (dimmer-configure-which-key)
-  (dimmer-configure-magit)
-  (dimmer-mode t))
+;; (use-package dimmer
+;;   :config
+;;   (setq dimmer-fraction 0.3)
+;;   (setq dimmer-adjustment-mode :foreground)
+;;   (setq dimmer-use-colorspace :rgb)
+;;   (dimmer-configure-which-key)
+;;   (dimmer-configure-magit)
+;;   (dimmer-mode t))
 #+end_src
+*** winpulse
 
+#+begin_src emacs-lisp
+(use-package winpulse
+  :ensure (winpulse :type git :host github :repo "xenodium/winpulse")
+  :config
+  (winpulse-mode +1))
+#+end_src
 ** Modeline
 
 *** Telephone-line

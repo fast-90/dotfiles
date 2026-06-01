@@ -1439,10 +1439,10 @@ Font settings for daemon mode:
 #+begin_src emacs-lisp
 (use-package vterm
   :ensure-system-package cmake
-  :bind (("C-c v" . dn/project-vterm)
-         ("C-c V" . vterm)
-         :map vterm-mode-map
-         ("C-b" . vterm--self-insert))
+  ;; :bind (("C-c v" . dn/project-vterm)
+  ;;        ("C-c V" . vterm)
+  ;;        :map vterm-mode-map
+  ;;        ("C-b" . vterm--self-insert))
   :init
   (defun dn/project-vterm ()
     "Start an inferior shell in the current project's root directory.
@@ -1484,6 +1484,29 @@ if one already exists."
 #+end_src
 
 I also enabled directory tracking and named vterm buffer, see also here how to setup: https://github.com/akermu/emacs-libvterm
+
+** ghostel
+
+#+begin_src emacs-lisp
+(use-package ghostel
+  :ensure (:host github :repo "dakra/ghostel" :branch "main")
+  :bind (("C-c v" . ghostel-project)
+         ("C-c V" . ghostel))
+  :config
+  (add-to-list 'display-buffer-alist
+               '((lambda (buffer-or-name _)
+                   (let ((buffer (get-buffer buffer-or-name)))
+                     (with-current-buffer buffer
+                       (or (equal major-mode 'ghostel-mode)
+                           (string-suffix-p "-ghostel*" (buffer-name buffer))))))
+                 (display-buffer-reuse-window display-buffer-at-bottom)
+                 (display-buffer-reuse-window display-buffer-in-direction)
+                 ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                 ;;(direction . bottom)
+                 (dedicated . t) ;dedicated is supported in emacs27
+                 (reusable-frames . visible)
+                 (window-height . 0.3))))
+#+end_src
 
 ** exec-path-from-shell
 
@@ -1869,6 +1892,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
 	  "\\*eldoc\\*"
 	  "\\*PDF-Occur\\*"
 	  "\\*.*vterm.*\\*"
+          ghostel-mode
 	  ;; "\\*pytest\\*"
           "\\*ChatGPT*\\*.*$"
           "\\*DeepSeek*\\*.*$"
@@ -1885,7 +1909,7 @@ Package to easily navigate cursor within buffers. Using this over evil-easymotio
                    (reusable-frames . visible)
                    (side . right)
                    (window-width . 0.3)) nil ))
-  (dolist (buffer-name-regex '("\\*.*vterm.*\\*"))
+  (dolist (buffer-name-regex '("\\*.*ghostel.*\\*"))
     (add-to-list 'display-buffer-alist
                  `(,buffer-name-regex
                    (display-buffer-reuse-window display-buffer-at-bottom)
@@ -2732,7 +2756,8 @@ Function to archive all done task in current org agenda/file.
   (add-to-list 'pulsar-pulse-functions 'scroll-down-command)
   (add-to-list 'pulsar-pulse-functions 'avy-goto-line)
   (add-to-list 'pulsar-pulse-functions 'avy-goto-char-timer)
-  (add-function :after after-focus-change-function (lambda () (if (frame-focus-state) (pulsar-pulse-line))))
+  (add-to-list 'pulsar-pulse-functions 'flash-jump)
+  ;; (add-function :after after-focus-change-function (ambda () (if (frame-focus-state) (pulsar-pulse-line))))
   :hook
   (consult-after-jump-hook . pulsar-recenter-middle)
   (consult-after-jump-hook . pulsar-reveal-entry)
